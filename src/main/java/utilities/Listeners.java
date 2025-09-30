@@ -1,10 +1,8 @@
 package utilities;
 
 import java.io.IOException;
-
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-
 import base.BasePage;
 
 public class Listeners extends BasePage implements ITestListener {
@@ -13,6 +11,7 @@ public class Listeners extends BasePage implements ITestListener {
 		super();
 	}
 
+	@Override
 	public void onTestFailure(ITestResult result) {
 
 		try {
@@ -20,7 +19,6 @@ public class Listeners extends BasePage implements ITestListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }
