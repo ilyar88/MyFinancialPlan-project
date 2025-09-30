@@ -1,8 +1,7 @@
 package utilities;
 
 import org.openqa.selenium.WebDriver;
-import pageObjects.LoginPage;
-import pageObjects.RegisterPage;
+import pageObjects.*;
 
 public class ManagePages {
 	
@@ -18,5 +17,13 @@ public class ManagePages {
 	
 	public static RegisterPage register() {
 	    return new RegisterPage(_driver);
+	}
+	
+	public static OtpPage otp() {
+	    return new OtpPage(_driver);
+	}
+	
+	public static ProfilePage profile() {
+	    return new ProfilePage(_driver);
 	}
 }
