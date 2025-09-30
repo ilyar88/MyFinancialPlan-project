@@ -17,14 +17,22 @@ public class LoginPage {
     }
     
     public WebElement emailAddress() {
-        return _driver.findElement(By.xpath("//*[normalize-space(text()),'כתובת מייל)]"));
+        return _driver.findElement(By.cssSelector("input[type='text'][name='email']"));
     }
     
     public WebElement password() {
-        return _driver.findElement(By.xpath("//*[normalize-space(text()),'סיסמא)]"));
+        return _driver.findElement(By.cssSelector("input[type='password']"));
     }
     
     public WebElement login() {
-        return _driver.findElement(By.xpath("//*[normalize-space(text()),'התחברות)]"));
+        return _driver.findElement(By.cssSelector("button[type='submit']"));
+    }
+    
+    public WebElement fastLogin() {
+        return _driver.findElement(By.cssSelector("button#\\:r7\\:"));
+    }
+    
+    public WebElement resetPassword() {
+        return _driver.findElement(By.cssSelector("a[href='/auth/reset-password']"));
     }
 }
