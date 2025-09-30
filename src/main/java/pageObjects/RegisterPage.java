@@ -11,9 +11,8 @@ public class RegisterPage {
 	public RegisterPage(WebDriver driver) {
 		_driver = driver;
     }
-	//*[@id=":rn:"]
     public WebElement login() {
-        return _driver.findElement(By.linkText("התחברות"));
+        return _driver.findElement(By.cssSelector("a[href='/']"));
     }
     
     public WebElement emailAddress() {
@@ -24,11 +23,15 @@ public class RegisterPage {
     	return _driver.findElement(By.cssSelector("input[name='password'][type='password']"));
     }
     
-    public WebElement passwordVerification() {
+    public WebElement passwordConfirmation() {
     	return _driver.findElement(By.cssSelector("input[name='passwordConfirmation'][type='password']"));
     }
     
     public WebElement CreateAccount() {
     	return _driver.findElement(By.cssSelector("button[type='submit']"));
+    }
+    
+    public WebElement fastRegistration() {
+    	return _driver.findElement(By.cssSelector("button#\\:rl\\:"));
     }
 }
