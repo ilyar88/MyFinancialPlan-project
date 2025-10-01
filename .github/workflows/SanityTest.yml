@@ -1,0 +1,36 @@
+name: Run financial website tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: "Choose your browser"
+        required: true
+        default: "chrome"
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - edge
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Run tests on selected browser
+        env:
+          URL: ${{ secrets.URL }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+        run: mvn -Dbrowser=${{ github.event.inputs.browser }} test
