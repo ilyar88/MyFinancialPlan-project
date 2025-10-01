@@ -16,7 +16,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: Configure Web_sittings
+    environment: Web_sittings
 
     steps:
       - name: Checkout code
