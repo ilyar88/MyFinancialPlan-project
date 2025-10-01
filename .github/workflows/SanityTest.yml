@@ -27,16 +27,19 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      # (Optional) extra masking in logs
+      - name: Mask secrets
+        run: |
+          echo "::add-mask::${{ secrets.URL }}"
+          echo "::add-mask::${{ secrets.USERNAME }}"
+          echo "::add-mask::${{ secrets.PASSWORD }}"
+          echo "::add-mask::${{ secrets.APP_PASSWORD }}"
+
       - name: Run tests on selected browser
         run: |
-          export URL="${{ secrets.URL }}"
-          export USERNAME="${{ secrets.USERNAME }}"
-          export PASSWORD="${{ secrets.PASSWORD }}"
-          export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-
-          mvn clean test \
-            -Dbrowser=${{ github.event.inputs.browser }} \
-            -DURL=$URL \
-            -DUSERNAME=$USERNAME \
-            -DPASSWORD=$PASSWORD \
-            -DAPP_PASSWORD=$APP_PASSWORD
+          mvn -B clean test \
+            -Dbrowser="${{ github.event.inputs.browser }}" \
+            -DURL="${{ secrets.URL }}" \
+            -DUSERNAME="${{ secrets.USERNAME }}" \
+            -DPASSWORD="${{ secrets.PASSWORD }}" \
+            -DAPP_PASSWORD="${{ secrets.APP_PASSWORD }}"
