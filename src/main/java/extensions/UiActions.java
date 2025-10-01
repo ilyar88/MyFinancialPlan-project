@@ -28,5 +28,9 @@ public class UiActions {
 	            throw new IllegalArgumentException("Invalid select type: " + value);
 	    }
 	}
+	
+	public static String getText(WebElement elem) {
+		return elem.getText();
+	}
 
 }
