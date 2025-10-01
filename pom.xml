@@ -66,6 +66,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
         <configuration>
+          <forkCount>0</forkCount>
+   		  <reuseForks>false</reuseForks>
           <suiteXmlFiles>
             <suiteXmlFile>testng.xml</suiteXmlFile>
           </suiteXmlFiles>
