@@ -13,12 +13,6 @@ on:
           - firefox
           - edge
 
-# Required for GitHub Pages deploy
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,28 +28,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Run tests + generate Allure (Maven)
+      - name: Run tests on selected browser
         run: |
           export URL="${{ secrets.URL }}"
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
-
-      # Publish the generated HTML (from allure:report) to Pages
-      - name: Upload Pages artifact
-        if: always()
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Allure Maven plugin HTML lives here:
-          path: target/site/allure-maven-plugin
-
-      - name: Deploy to GitHub Pages
-        if: always()
-        id: deploy
-        uses: actions/deploy-pages@v4
-
-      - name: Add report link to job summary
-        if: always()
-        run: |
-          echo "Allure report: ${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
