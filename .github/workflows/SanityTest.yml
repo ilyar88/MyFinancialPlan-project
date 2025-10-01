@@ -33,4 +33,10 @@ jobs:
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
+
+          mvn clean test \
+            -Dbrowser=${{ github.event.inputs.browser }} \
+            -DURL=$URL \
+            -DUSERNAME=$USERNAME \
+            -DPASSWORD=$PASSWORD \
+            -DAPP_PASSWORD=$APP_PASSWORD
