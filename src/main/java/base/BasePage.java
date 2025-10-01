@@ -67,6 +67,7 @@ public class BasePage {
     public void teardown() {
         if (driver != null) {
             driver.quit();
+			driver = null;
         }
     }
     
