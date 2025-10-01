@@ -61,7 +61,7 @@ public class BasePage {
         driver.manage().window().setSize(new Dimension(1920, 1080));
         int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitSeconds));
-        driver.get(prop.getProperty("URL"));
+        driver.get(System.getenv("URL"));
         ManagePages.init(driver);
         WaitForElement.init(driver,waitSeconds);
         OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"), "gmail.com");
