@@ -28,9 +28,9 @@ jobs:
           java-version: 17
 
       - name: Run tests on selected browser
-        env:
-          URL: ${{ secrets.URL }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-        run: mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
+        run: |
+          export URL="${{ secrets.URL }}"
+          export USERNAME="${{ secrets.USERNAME }}"
+          export PASSWORD="${{ secrets.PASSWORD }}"
+          export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
