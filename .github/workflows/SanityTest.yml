@@ -29,8 +29,8 @@ jobs:
 
       - name: Run tests on selected browser
         env:
-          URL: ${{ secrets.URL }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          URL: ${{ secrets.URL }} \
+          USERNAME: ${{ secrets.USERNAME }} \
+          PASSWORD: ${{ secrets.PASSWORD }} \
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }} \
         run: mvn -Dbrowser=${{ github.event.inputs.browser }} test
