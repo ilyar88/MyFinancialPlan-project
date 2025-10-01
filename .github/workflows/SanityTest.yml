@@ -34,7 +34,7 @@ jobs:
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
       - name: Upload Allure results
         if: always()
