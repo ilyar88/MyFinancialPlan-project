@@ -31,22 +31,11 @@ jobs:
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn -Dmaven.test.failure.ignore=true \
-            clean -Dbrowser=${{ github.event.inputs.browser }} test \
-            io.qameta.allure:allure-maven:2.16.0:report
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test \
+          io.qameta.allure:allure-maven:2.16.0:report
 
       - name: Upload Pages artifact (Allure HTML)
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: target/site/allure-maven-plugin   # index.html lives here
-
-      - name: Deploy to GitHub Pages
-        if: always()
-        id: deploy
-        uses: actions/deploy-pages@v4
-
-      - name: Link to report
-        if: always()
-        run: |
-          echo "Allure report: ${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
