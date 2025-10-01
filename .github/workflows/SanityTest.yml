@@ -34,5 +34,5 @@ jobs:
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          export SLOW_MODE_MS=300
+          export SLOW_MODE_MS=500
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
