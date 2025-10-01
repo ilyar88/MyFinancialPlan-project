@@ -27,10 +27,11 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Run tests on selected browser
+      - name: Run tests on selected browser (not headless)
         env:
-          URL: ${{ secrets.URL }} \
-          USERNAME: ${{ secrets.USERNAME }} \
-          PASSWORD: ${{ secrets.PASSWORD }} \
-          APP_PASSWORD: ${{ secrets.APP_PASSWORD }} \
+          URL: ${{ secrets.URL }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          HEADLESS: "false"
         run: mvn -Dbrowser=${{ github.event.inputs.browser }} test
