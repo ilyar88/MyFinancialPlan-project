@@ -1,8 +1,11 @@
 package base;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -30,12 +33,11 @@ public class BasePage {
 
 	public BasePage() throws IOException {
 	    prop = new Properties();
-
-	    try (FileInputStream data = new FileInputStream(
-	            System.getProperty("user.dir") + "\\src\\main\\java\\configuration\\config.properties")) {
-	        prop.load(data);
+	    Path cfg = Paths.get(System.getProperty("user.dir"),
+                "src","main","java","configuration","config.properties");
+	    try (InputStream input = Files.newInputStream(cfg)) {
+	    prop.load(input);
 	    }
-
 	    // Resolve placeholder like ${URL} using env first, then system properties
 	    for (String key : prop.stringPropertyNames()) {
 	        String val = prop.getProperty(key);
