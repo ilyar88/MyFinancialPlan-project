@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -57,7 +58,7 @@ public class BasePage {
     @BeforeClass(alwaysRun = true) // runs once before all tests in this class
     public void setup() {
         driver = getDriver();
-        driver.manage().window().maximize();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
         int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitSeconds));
         driver.get(prop.getProperty("URL"));
@@ -80,8 +81,8 @@ public class BasePage {
     public WebDriver getDriver() {
         if (driver != null) return driver;
 
-        String browser = prop.getProperty("browser");
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        String browser = prop.getProperty("browser", "chrome"); // default to chrome
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
 
         // ensure a unique temp profile directory exists before passing to browsers
         if (tempProfileDir == null) {
@@ -97,6 +98,7 @@ public class BasePage {
             	WebDriverManager.firefoxdriver().setup();
             	FirefoxOptions fOpts = new FirefoxOptions();
             	fOpts.addArguments("-profile", tempProfileDir.toAbsolutePath().toString());
+                fOpts.addArguments("-width=1920", "-height=1080");
             	if (headless) fOpts.addArguments("-headless");
             	driver = new FirefoxDriver(fOpts);
                 break;
@@ -105,6 +107,11 @@ public class BasePage {
             	WebDriverManager.edgedriver().setup();
             	EdgeOptions eOpts = new EdgeOptions();
             	eOpts.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
+                eOpts.addArguments("--window-size=1920,1080",
+                                   "--no-sandbox",
+                                   "--disable-dev-shm-usage",
+                                   "--no-first-run",
+                                   "--no-default-browser-check");
             	if (headless) eOpts.addArguments("--headless=new");
             	driver = new EdgeDriver(eOpts); 
                 break;
@@ -114,6 +121,11 @@ public class BasePage {
             	WebDriverManager.chromedriver().setup();
             	ChromeOptions cOpts = new ChromeOptions();
             	cOpts.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
+                cOpts.addArguments("--window-size=1920,1080",
+                                   "--no-sandbox",
+                                   "--disable-dev-shm-usage",
+                                   "--no-first-run",
+                                   "--no-default-browser-check");
             	if (headless) cOpts.addArguments("--headless=new");
             	driver = new ChromeDriver(cOpts);
         }
