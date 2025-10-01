@@ -63,7 +63,11 @@
     <plugins>
       <!-- Runs tests on `mvn test` and writes Allure results -->
       <plugin>
+<<<<<<< HEAD
       	<groupId>org.apache.maven.plugins</groupId>
+=======
+		<groupId>org.apache.maven.plugins</groupId>
+>>>>>>> 00fb2c9cbfc5725facf19357b63b3f2be23cc5a8
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
         <configuration>
