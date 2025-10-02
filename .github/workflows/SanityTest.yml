@@ -20,13 +20,32 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
 
-      - name: Run tests + generate Allure report
+      - name: Run tests
         run: |
           export URL="${{ secrets.URL }}"
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test
+
+      - name: Upload Pages artifact (Allure HTML)
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/site/allure-maven-plugin
+
+      - name: Fail job if tests failed
+        if: always()
+        run: |
+          fails=0
+          errs=0
+          if [ -d target/surefire-reports ]; then
+          fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+          errs=$(grep -ho 'errors="[0-9]\+"'   target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+          fi
+          if [ $((fails + errs)) -gt 0 ]; then
+            exit 1
+          fi
 
       - name: Output test results (Surefire report)
         if: always()
@@ -40,15 +59,4 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           else
             printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-          # ---- Final check: fail the job if tests failed ----
-          fails=0
-          errs=0
-          if [ -d target/surefire-reports ]; then
-            fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            errs=$(grep -ho 'errors="[0-9]\+"'   target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-          fi
-          if [ $((fails + errs)) -gt 0 ]; then
-            exit 0
           fi
