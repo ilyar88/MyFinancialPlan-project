@@ -1,4 +1,3 @@
-
 name: Run financial website tests
 
 on:
@@ -28,6 +27,7 @@ jobs:
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
+
       - name: Output test results (Surefire report)
         if: always()
         run: |
@@ -41,6 +41,30 @@ jobs:
           else
             printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+          # ---- Totals (append to summary) ----
+          tests=0
+          fails=0
+          errs=0
+          skips=0
+
+          if [ -d target/surefire-reports ]; then
+            tests=$(grep -ho 'tests="[0-9]\+"'   target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            errs=$(grep -ho 'errors="[0-9]\+"'   target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            skips=$(grep -ho 'skipped="[0-9]\+"'  target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+          fi
+
+          passed=$((tests - fails - errs - skips))
+          {
+            printf "\n### Test Totals\n"
+            printf "- Total: %s\n" "$tests"
+            printf "- Passed: %s\n" "$passed"
+            printf "- Failed: %s\n" "$fails"
+            printf "- Errors: %s\n" "$errs"
+            printf "- Skipped: %s\n" "$skips"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload Pages artifact (Allure HTML)
         if: always()
         uses: actions/upload-pages-artifact@v3
