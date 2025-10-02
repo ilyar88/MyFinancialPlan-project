@@ -52,7 +52,7 @@ jobs:
             printf "- Failed: %s\n" -- "$fails"
             printf "- Errors: %s\n" -- "$errs"
             printf "- Skipped: %s\n" -- "$skips"
-          } >> "$GITHUB_STEP_SUMMARY
+          } >> "$GITHUB_STEP_SUMMARY"
 
           FILE="target/surefire-reports/Suite/Test.html"
           if [ -f "$FILE" ]; then
@@ -62,7 +62,7 @@ jobs:
             cat "$FILE"
           } >> "$GITHUB_STEP_SUMMARY"
           else
-            printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
+            printf "Not found: %s\n" -- "$FILE" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload Pages artifact (Allure HTML)
