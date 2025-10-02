@@ -31,24 +31,18 @@ jobs:
       - name: Output test results (Surefire report)
         if: always()
         run: |
-          echo "## Test Results" >> "$GITHUB_STEP_SUMMARY"
-          if [ -d target/surefire-reports ]; then
-            tests=$(grep -ho 'tests="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            errs=$(grep -ho 'errors="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            skipped=$(grep -ho 'skipped="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            echo "- Tests: $tests"    | tee -a "$GITHUB_STEP_SUMMARY"
-            echo "- Failures: $fails" | tee -a "$GITHUB_STEP_SUMMARY"
-            echo "- Errors: $errs"    | tee -a "$GITHUB_STEP_SUMMARY"
-            echo "- Skipped: $skipped" | tee -a "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "Last lines from Surefire logs:" >> "$GITHUB_STEP_SUMMARY"
-            grep -R "Tests run:" -n target/surefire-reports || true
-            grep -R "<<< FAILURE!" -n target/surefire-reports || true
+          FILE="target/surefire-reports/Suite/Test.html"
+          if [ -f "$FILE" ]; then
+          {
+            printf "## Surefire: Suite/Test.html\n\n"
+            printf "<details><summary>View Test.html</summary>\n\n"
+            cat "$FILE"
+            printf '\n```\n'
+            printf "</details>\n"
+          } >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "No Surefire reports found." | tee -a "$GITHUB_STEP_SUMMARY"
+            printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
           fi
-
 
       - name: Upload Pages artifact (Allure HTML)
         if: always()
