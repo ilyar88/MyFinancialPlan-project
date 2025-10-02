@@ -31,17 +31,6 @@ jobs:
       - name: Output test results (Surefire report)
         if: always()
         run: |
-          FILE="target/surefire-reports/Suite/Test.html"
-          if [ -f "$FILE" ]; then
-          {
-            printf "## Surefire: Suite/Test.html\n\n"
-            printf "<details><summary>View Test.html</summary>\n\n"
-            cat "$FILE"
-          } >> "$GITHUB_STEP_SUMMARY"
-          else
-            printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
           # ---- Totals (append to summary) ----
           tests=0
           fails=0
@@ -64,6 +53,17 @@ jobs:
             printf "- Errors: %s\n" "$errs"
             printf "- Skipped: %s\n" "$skips"
           } >> "$GITHUB_STEP_SUMMARY"
+
+          FILE="target/surefire-reports/Suite/Test.html"
+          if [ -f "$FILE" ]; then
+          {
+            printf "## Surefire: Suite/Test.html\n\n"
+            printf "<details><summary>View Test.html</summary>\n\n"
+            cat "$FILE"
+          } >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload Pages artifact (Allure HTML)
         if: always()
