@@ -52,7 +52,7 @@ jobs:
           FILE="target/surefire-reports/Suite/Test.html"
           if [ -f "$FILE" ]; then
           {
-            echo "## Surefire: Suite/Test.html"
+            echo "## Suite/Test.html"
             echo "<details><summary>View Test.html</summary>"
             cat "$FILE"
             echo "</details>"
