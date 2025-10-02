@@ -28,7 +28,7 @@ jobs:
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
-      - name: Output test results (Surefire)
+      - name: Output test results (Surefire + Allure reports)
         if: always()
         run: |
           echo "## Test Results" >> "$GITHUB_STEP_SUMMARY"
@@ -37,10 +37,18 @@ jobs:
             fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
             errs=$(grep -ho 'errors="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
             skipped=$(grep -ho 'skipped="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            echo "- Tests: $tests"    | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "- Tests: $tests"   | tee -a "$GITHUB_STEP_SUMMARY"
             echo "- Failures: $fails" | tee -a "$GITHUB_STEP_SUMMARY"
             echo "- Errors: $errs"    | tee -a "$GITHUB_STEP_SUMMARY"
             echo "- Skipped: $skipped" | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "### Failing classes" >> "$GITHUB_STEP_SUMMARY"
+            for f in target/surefire-reports/TEST-*.xml; do
+              [ -e "$f" ] || continue
+              if grep -qE 'failures="[^0]"|errors="[^0]"' "$f"; then
+                echo "- $(basename "$f")" | tee -a "$GITHUB_STEP_SUMMARY"
+              fi
+            done
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "Last lines from Surefire logs:" >> "$GITHUB_STEP_SUMMARY"
             grep -R "Tests run:" -n target/surefire-reports || true
@@ -48,6 +56,13 @@ jobs:
           else
             echo "No Surefire reports found." | tee -a "$GITHUB_STEP_SUMMARY"
           fi
+
+          if [ -d target/allure-results ]; then
+            count=$(ls -1 target/allure-results | wc -l | xargs)
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Allure raw results files: $count" | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+
 
       - name: Upload Pages artifact (Allure HTML)
         if: always()
