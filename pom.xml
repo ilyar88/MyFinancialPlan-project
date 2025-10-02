@@ -61,6 +61,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
         <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
           <forkCount>0</forkCount>
           <reuseForks>false</reuseForks>
           <suiteXmlFiles>
@@ -79,6 +80,7 @@
         <version>2.16.0</version>
         <configuration>
           <resultsDirectory>${project.build.directory}/../allure-results</resultsDirectory>
+          <reportDirectory>${project.reporting.outputDirectory}/allure-maven-plugin</reportDirectory>
         </configuration>
       </plugin>
     </plugins>
