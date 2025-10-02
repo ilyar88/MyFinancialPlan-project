@@ -31,8 +31,7 @@ jobs:
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn -D maven.test.failure.ignore=true \
-          clean -Dbrowser=${{ github.event.inputs.browser }} test \
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test \
           io.qameta.allure:allure-maven:2.16.0:report
 
       - name: Upload Pages artifact (Allure HTML)
