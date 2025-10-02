@@ -37,8 +37,6 @@ jobs:
             printf "## Surefire: Suite/Test.html\n\n"
             printf "<details><summary>View Test.html</summary>\n\n"
             cat "$FILE"
-            printf '\n```\n'
-            printf "</details>\n"
           } >> "$GITHUB_STEP_SUMMARY"
           else
             printf "Not found: %s\n" "$FILE" >> "$GITHUB_STEP_SUMMARY"
