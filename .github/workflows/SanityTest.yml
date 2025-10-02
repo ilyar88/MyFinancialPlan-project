@@ -10,11 +10,6 @@ on:
         type: choice
         options: [chrome, firefox, edge]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -25,14 +20,22 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
 
-      - name: Run tests + generate Allure HTML
+      - name: Run tests + generate Allure report
         run: |
           export URL="${{ secrets.URL }}"
           export USERNAME="${{ secrets.USERNAME }}"
           export PASSWORD="${{ secrets.PASSWORD }}"
           export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
-          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test \
-          io.qameta.allure:allure-maven:2.16.0:report
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
+
+      - name: Upload test results (Surefire)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            target/surefire-reports/**
+          if-no-files-found: ignore
 
       - name: Upload Pages artifact (Allure HTML)
         if: always()
