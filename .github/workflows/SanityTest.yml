@@ -34,6 +34,8 @@ jobs:
           FILE="target/surefire-reports/Suite/Test.html"
           if [ -f "$FILE" ]; then
           {
+            printf "## Surefire: Suite/Test.html\n\n"
+            printf "<details><summary>View Test.html</summary>\n\n"
             cat "$FILE"
           } >> "$GITHUB_STEP_SUMMARY"
           else
