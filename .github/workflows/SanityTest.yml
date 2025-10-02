@@ -36,6 +36,6 @@ jobs:
 
       - name: Upload Pages artifact (Allure HTML)
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           path: target/site/allure-maven-plugin   # index.html lives here
