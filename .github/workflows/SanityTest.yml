@@ -47,12 +47,12 @@ jobs:
           passed=$((tests - fails - errs - skips))
           {
             printf "\n### Test Totals\n"
-            printf "- Total: %s\n" "$tests"
-            printf "- Passed: %s\n" "$passed"
-            printf "- Failed: %s\n" "$fails"
-            printf "- Errors: %s\n" "$errs"
-            printf "- Skipped: %s\n" "$skips"
-          } >> "$GITHUB_STEP_SUMMARY"
+            printf "- Total: %s\n" -- "$tests"
+            printf "- Passed: %s\n" -- "$passed"
+            printf "- Failed: %s\n" -- "$fails"
+            printf "- Errors: %s\n" -- "$errs"
+            printf "- Skipped: %s\n" -- "$skips"
+          } >> "$GITHUB_STEP_SUMMARY
 
           FILE="target/surefire-reports/Suite/Test.html"
           if [ -f "$FILE" ]; then
