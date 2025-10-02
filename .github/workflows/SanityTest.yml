@@ -38,10 +38,10 @@ jobs:
           skips=0
 
           if [ -d target/surefire-reports ]; then
-            tests=$(grep -ho 'tests="[0-9]\+"'   target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            errs=$(grep -ho 'errors="[0-9]\+"'   target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
-            skips=$(grep -ho 'skipped="[0-9]\+"'  target/surefire-reports/TEST-*.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            tests=$(grep -ho 'tests="[0-9]\+"'   target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            errs=$(grep -ho 'errors="[0-9]\+"'   target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
+            skips=$(grep -ho 'skipped="[0-9]\+"'  target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
           fi
 
           passed=$((tests - fails - errs - skips))
