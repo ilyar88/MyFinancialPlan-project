@@ -36,33 +36,34 @@ jobs:
           fails=0
           errs=0
           skips=0
-
+          
           if [ -d target/surefire-reports ]; then
             tests=$(grep -ho 'tests="[0-9]\+"'   target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
             fails=$(grep -ho 'failures="[0-9]\+"' target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
             errs=$(grep -ho 'errors="[0-9]\+"'   target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
             skips=$(grep -ho 'skipped="[0-9]\+"'  target/surefire-reports/testng-results.xml 2>/dev/null | grep -o '[0-9]\+' | awk '{s+=$1} END{print s+0}')
           fi
-
+          
           passed=$((tests - fails - errs - skips))
           {
-            printf "\n### Test Totals\n"
-            printf "- Total: %s\n" -- "$tests"
-            printf "- Passed: %s\n" -- "$passed"
-            printf "- Failed: %s\n" -- "$fails"
-            printf "- Errors: %s\n" -- "$errs"
-            printf "- Skipped: %s\n" -- "$skips"
+            echo "### Test Totals"
+            echo "- Total: $tests"
+            echo "- Passed: $passed"
+            echo "- Failed: $fails"
+            echo "- Errors: $errs"
+            echo "- Skipped: $skips"
           } >> "$GITHUB_STEP_SUMMARY"
-
+          
           FILE="target/surefire-reports/Suite/Test.html"
           if [ -f "$FILE" ]; then
           {
-            printf "## Surefire: Suite/Test.html\n\n"
-            printf "<details><summary>View Test.html</summary>\n\n"
+            echo "## Surefire: Suite/Test.html"
+            echo "<details><summary>View Test.html</summary>"
             cat "$FILE"
+            echo "</details>"
           } >> "$GITHUB_STEP_SUMMARY"
           else
-            printf "Not found: %s\n" -- "$FILE" >> "$GITHUB_STEP_SUMMARY"
+            echo "Not found: $FILE" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload Pages artifact (Allure HTML)
