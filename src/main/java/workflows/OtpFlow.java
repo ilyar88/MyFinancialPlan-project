@@ -37,20 +37,30 @@ public class OtpFlow {
     public static void typePassword() {
         List<WebElement> elements = ManagePages.otp().otpPassword();
         String password = "";
+        final long deadline = System.currentTimeMillis() + 10_000; // 10 seconds
+        final long pollEveryMs = 1_000;
 
         try {
-        	for (int attempt = 0; attempt < 5 && password.isBlank(); attempt++) { //“Waiting for the OTP to arrive by email. 
-        		password = getPassword();
-        	}
+            while (System.currentTimeMillis() < deadline && (password == null || password.isBlank())) {
+                password = getPassword(); 
+                if (password == null || password.isBlank()) Thread.sleep(pollEveryMs);
+            }
+            // If still empty → fail early (don’t try to charAt)
+            if (password == null || password.isBlank()) {
+                Verifications.assertFailed("OTP password not found in the mail within timeout.");
+                return; // make sure we don't continue the flow
+            }
             for (int i = 0; i < elements.size(); i++) {
                 UiActions.enterText(elements.get(i), String.valueOf(password.charAt(i)));
             }
+            
+            UiActions.click(ManagePages.otp().verifyPassword());
+            WaitForElement.delayWait(ManagePages.otp().passwordAlert(), 1, 10);
+            Verifications.isDisplayed(ManagePages.otp().passwordAlert(), false);
+            
         } catch (Exception e) {
-            Verifications.assertFailed("OTP password not found in the mail.");
+        	Verifications.assertFailed("Failed while waiting/typing OTP: " + e.getMessage());
         }
-        UiActions.click(ManagePages.otp().verifyPassword());
-        WaitForElement.delayWait(ManagePages.otp().passwordAlert(), 1, 10);
-        Verifications.isDisplayed(ManagePages.otp().passwordAlert(), false);
     }
 
  // Returns a string with the (last) 6-digit OTP found in today's emails
@@ -163,5 +173,4 @@ public class OtpFlow {
                 .replaceAll("\\s+", " ")        // collapse whitespace
                 .trim();
  	}
-
 }
