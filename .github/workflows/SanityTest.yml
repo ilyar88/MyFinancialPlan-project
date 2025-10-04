@@ -10,6 +10,8 @@ on:
         type: choice
         options: [chrome, firefox, edge]
 
+run-name: "${{ inputs.suite }} • ${{ inputs.browser }}"
+
 jobs:
   test:
     runs-on: ubuntu-latest
