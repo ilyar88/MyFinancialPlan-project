@@ -49,11 +49,11 @@ jobs:
             echo "- Ignored: $ignored"
           } >> "$GITHUB_STEP_SUMMARY"
 
-          FILE="target/surefire-reports/emailable-report.html"
+          FILE="target/surefire-reports/Suite/SanityTest.html"
           if [ -f "$FILE" ]; then
           {
-            echo "## report.html"
-            echo "<details><summary>View report.html</summary>"
+            echo "## SanityTest.html"
+            echo "<details><summary>View SanityTest.html</summary>"
             cat "$FILE"
             echo "</details>"
            } >> "$GITHUB_STEP_SUMMARY"
