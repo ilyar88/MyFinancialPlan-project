@@ -81,7 +81,7 @@ public class BasePage {
     public WebDriver getDriver() {
         if (driver != null) return driver;
 
-        String browser = prop.getProperty("browser", "chrome"); // default to chrome
+        String browser = prop.getProperty("browser"); // default to chrome
         boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
 
         // ensure a unique temp profile directory exists before passing to browsers
@@ -107,12 +107,8 @@ public class BasePage {
             	WebDriverManager.edgedriver().setup();
             	EdgeOptions eOpts = new EdgeOptions();
             	eOpts.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
-                eOpts.addArguments("--window-size=1920,1080",
-                                   "--no-sandbox",
-                                   "--disable-dev-shm-usage",
-                                   "--no-first-run",
-                                   "--no-default-browser-check");
-            	if (headless) eOpts.addArguments("--headless=new");
+                eOpts.addArguments("--window-size=1920,1080");
+            	if (headless) eOpts.addArguments("--headless");
             	driver = new EdgeDriver(eOpts); 
                 break;
 
@@ -121,12 +117,8 @@ public class BasePage {
             	WebDriverManager.chromedriver().setup();
             	ChromeOptions cOpts = new ChromeOptions();
             	cOpts.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
-                cOpts.addArguments("--window-size=1920,1080",
-                                   "--no-sandbox",
-                                   "--disable-dev-shm-usage",
-                                   "--no-first-run",
-                                   "--no-default-browser-check");
-            	if (headless) cOpts.addArguments("--headless=new");
+                cOpts.addArguments("--window-size=1920,1080");
+            	if (headless) cOpts.addArguments("--headless");
             	driver = new ChromeDriver(cOpts);
         }
         return driver;
