@@ -48,7 +48,6 @@ public class OtpFlow {
             // If still empty → fail early (don’t try to charAt)
             if (password == null || password.isBlank()) {
                 Verifications.assertFailed("OTP password not found in the mail within timeout.");
-                return; // make sure we don't continue the flow
             }
             for (int i = 0; i < elements.size(); i++) {
                 UiActions.enterText(elements.get(i), String.valueOf(password.charAt(i)));
