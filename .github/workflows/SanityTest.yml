@@ -65,4 +65,5 @@ jobs:
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: target/site/allure-maven-plugin   # index.html lives here
+          name: Allure report
+          path: target/site/allure-maven-plugin
