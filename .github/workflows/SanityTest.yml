@@ -21,11 +21,12 @@ jobs:
         with: { distribution: temurin, java-version: 17 }
 
       - name: Run tests + generate Allure report
+        env:
+          URL: ${{ secrets.URL }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
-          export URL="${{ secrets.URL }}"
-          export USERNAME="${{ secrets.USERNAME }}"
-          export PASSWORD="${{ secrets.PASSWORD }}"
-          export APP_PASSWORD="${{ secrets.APP_PASSWORD }}"
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
       - name: Output test results (Surefire report)
