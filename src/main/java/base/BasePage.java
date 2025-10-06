@@ -81,8 +81,8 @@ public class BasePage {
     public WebDriver getDriver() {
         if (driver != null) return driver;
 
-        String browser = prop.getProperty("browser"); // default to chrome
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
+        String browser = prop.getProperty("browser");
+        boolean headless = true;
 
         // ensure a unique temp profile directory exists before passing to browsers
         if (tempProfileDir == null) {
