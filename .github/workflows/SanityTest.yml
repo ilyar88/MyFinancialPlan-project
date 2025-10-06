@@ -45,7 +45,6 @@ jobs:
             failed=$(echo "$line"  | grep -o 'failed="[0-9]\+"'  | sed 's/[^0-9]//g')
             skipped=$(echo "$line" | grep -o 'skipped="[0-9]\+"' | sed 's/[^0-9]//g')
             ignored=$(echo "$line" | grep -o 'ignored="[0-9]\+"' | sed 's/[^0-9]//g')
-            echo "## Test Results"
             echo "| Total | Passed | Failed | Skipped | Ignored |"
             echo "|------:|------:|------:|-------:|-------:|"
             echo "| ${total:-0} | ${passed:-0} | ${failed:-0} | ${skipped:-0} | ${ignored:-0} |"
