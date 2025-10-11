@@ -60,6 +60,8 @@ public class WaitForElement {
 	    	_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
 	    }
 	}
+
+
 	
 	enum For {
 	    ELEMENT_EXISTS, ELEMENT_DISPLAYED, ELEMENT_CLICKABLE;
