@@ -10,7 +10,7 @@ public class Verifications {
                 "Verify equals failed: " + actual + " is not equal to: " + expected);
     }
 
-    public static void verifyString(String actual, String expected) {
+    public static void verifyText(String actual, String expected) {
         Assert.assertTrue(expected != null && expected.contains(actual),
                 "Verify equals failed: " + actual + " is not in: " + expected);
     }
@@ -28,9 +28,8 @@ public class Verifications {
                 " expected displayed=" + expected + " but was " + actual);
     }
     
-    public static void verifyStringSoft(SoftAssert sa, String actual, String expected) {
+    public static void verifyTextSoft(SoftAssert sa, String actual, String expected) {
         sa.assertTrue(expected != null && expected.contains(actual),
                 "Verify string (soft) failed: " + actual + " is not in: " + expected);
     }
 }
-
