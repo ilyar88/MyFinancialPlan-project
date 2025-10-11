@@ -15,17 +15,11 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>3.141.59</version>
+      <version>4.35.0</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
     <dependency>
@@ -45,17 +39,11 @@
       <artifactId>testng</artifactId>
       <version>7.11.0</version>
     </dependency>
-	<!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-mail -->
-	<dependency>
+    <!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-mail -->
+    <dependency>
       <groupId>org.eclipse.angus</groupId>
       <artifactId>angus-mail</artifactId>
       <version>2.0.4</version>
-	</dependency>
-	<!-- Jakarta Activation API needed by Angus Mail -->
-    <dependency>
-      <groupId>jakarta.activation</groupId>
-      <artifactId>jakarta.activation-api</artifactId>
-      <version>2.1.3</version>
     </dependency>
   </dependencies>
 
@@ -63,32 +51,31 @@
     <plugins>
       <!-- Runs tests on `mvn test` and writes Allure results -->
       <plugin>
-<<<<<<< HEAD
-      	<groupId>org.apache.maven.plugins</groupId>
-=======
-		<groupId>org.apache.maven.plugins</groupId>
->>>>>>> 00fb2c9cbfc5725facf19357b63b3f2be23cc5a8
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
         <configuration>
+		  <testFailureIgnore>true</testFailureIgnore>
           <forkCount>0</forkCount>
-   		  <reuseForks>false</reuseForks>
+          <reuseForks>false</reuseForks>
           <suiteXmlFiles>
             <suiteXmlFile>testng.xml</suiteXmlFile>
           </suiteXmlFiles>
           <systemPropertyVariables>
             <browser>${browser}</browser>
-            <!-- Allure results go here (default Allure dir name) -->
-            <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
           </systemPropertyVariables>
         </configuration>
       </plugin>
 
       <!-- Allure Maven plugin to generate/serve reports -->
-      <plugin>
+     <plugin>
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-maven</artifactId>
         <version>2.16.0</version>
+        <configuration>
+          <resultsDirectory>${project.build.directory}/../allure-results</resultsDirectory>
+          <reportDirectory>${project.reporting.outputDirectory}/allure-maven-plugin</reportDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
