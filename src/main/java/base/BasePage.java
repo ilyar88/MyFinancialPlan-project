@@ -24,9 +24,14 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import utilities.*;
 import workflows.OtpFlow;
+import io.qameta.allure.testng.AllureTestNg;
+import org.testng.annotations.Listeners;
 
+@Listeners({ AllureTestNg.class })
 public class BasePage {
 	/**
 	 * Base test class: loads config, initializes WebDriver and
@@ -61,7 +66,7 @@ public class BasePage {
         driver.manage().window().setSize(new Dimension(1920, 1080));
         int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitSeconds));
-        driver.get(prop.getProperty("URL"));
+        driver.get("https://testing.myfinancialplan.co.il/auth/login/");
         ManagePages.init(driver);
         WaitForElement.init(driver,waitSeconds);
         OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"), "gmail.com");
@@ -69,10 +74,7 @@ public class BasePage {
     
     @AfterClass(alwaysRun = true)
     public void teardown() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
+    	driver.quit();
     }
     
     // add this field if you want to clean temp dirs later
@@ -125,16 +127,16 @@ public class BasePage {
     }
 
 	/** Take a screenshot and save it under /target/screenshots/<timestamp>.png. */
-	public void takeSnapShot(String name) throws IOException {
-		File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    @Attachment("Take snapshot")
+    public void takeSnapShot(String name) throws IOException {
+        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
-		File destFile = Paths.get(
-				System.getProperty("user.dir"),
-				"target","screenshots", timestamp() + "_" + name + ".png"
-		).toFile();
+        File destFile = Paths.get(
+            System.getProperty("user.dir"), "target", "screenshots", timestamp() + "_" + name + ".png").toFile();
 
-		FileUtils.copyFile(srcFile, destFile);
-	}
+        FileUtils.copyFile(srcFile, destFile);
+        Allure.addAttachment("screenshot", "image/png", new java.io.FileInputStream(destFile), "png");
+    }
 
 	public String timestamp() {
 		return new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
