@@ -37,20 +37,29 @@ public class OtpFlow {
     public static void typePassword() {
         List<WebElement> elements = ManagePages.otp().otpPassword();
         String password = "";
+        final long deadline = System.currentTimeMillis() + 10_000; // 10 seconds
+        final long pollEveryMs = 1_000;
 
         try {
-        	for (int attempt = 0; attempt < 5 && password.isBlank(); attempt++) { //“Waiting for the OTP to arrive by email. 
-        		password = getPassword();
-        	}
+            while (System.currentTimeMillis() < deadline && (password == null || password.isBlank())) {
+                password = getPassword(); 
+                if (password == null || password.isBlank()) Thread.sleep(pollEveryMs);
+            }
+            // If still empty → fail early (don’t try to charAt)
+            if (password == null || password.isBlank()) {
+                Verifications.assertFailed("OTP password not found in the mail within timeout.");
+            }
             for (int i = 0; i < elements.size(); i++) {
                 UiActions.enterText(elements.get(i), String.valueOf(password.charAt(i)));
             }
+            
+            UiActions.click(ManagePages.otp().verifyPassword());
+            WaitForElement.delayWait(ManagePages.otp().passwordAlert(), 1, 10);
+            Verifications.isDisplayed(ManagePages.otp().passwordAlert(), false);
+            
         } catch (Exception e) {
-            Verifications.assertFailed("OTP password not found in the mail.");
+        	Verifications.assertFailed("Failed while waiting/typing OTP: " + e.getMessage());
         }
-        UiActions.click(ManagePages.otp().verifyPassword());
-        WaitForElement.delayWait(ManagePages.otp().passwordAlert(), 1, 10);
-        Verifications.isDisplayed(ManagePages.otp().passwordAlert(), false);
     }
 
  // Returns a string with the (last) 6-digit OTP found in today's emails
@@ -81,23 +90,21 @@ public class OtpFlow {
 	         String sss = "";                   // will hold the result (last OTP found)
 	         if (lines.length == 0) return sss; // no emails matched → return empty string
 
-	         // Iterate over all matched messages
-	         for (Message m : lines) {
-	             // Extract a text representation of the message body
-	             String body = htmlToText(m).trim();
+	         Message m = lines[lines.length-1]; //find the first mail that matched
+	         // Extract a text representation of the message body
+	         String body = htmlToText(m).trim();
 
-	             // Regex for exactly six digits with word boundaries on both sides
-	             Pattern OTP_6_DIGITS = Pattern.compile("\\b\\d{6}\\b");
+	         // Regex for exactly six digits with word boundaries on both sides
+	         Pattern OTP_6_DIGITS = Pattern.compile("\\b\\d{6}\\b");
 
-	             // Scan the body for 6-digit sequences
-	             Matcher matcher = OTP_6_DIGITS.matcher(body);
-	             while (matcher.find()) {
-	                 // Save the match. Note: this overwrites on each match,
-	                 // so after the loop 'sss' contains the *last* 6-digit code seen
-	                 sss = matcher.group();
-	             }
+	         // Scan the body for 6-digit sequences
+	         Matcher matcher = OTP_6_DIGITS.matcher(body);
+	         while (matcher.find()) {
+	        	 // Save the match. Note: this overwrites on each match,
+	        	 // so after the loop 'sss' contains the *last* 6-digit code seen
+	        	 sss = matcher.group();
 	         }
-	         // Return the last 6-digit code found across all matching emails ("" if none)
+	         // Return the last 6-digit code found across all matching email ("" if none)
 	         return sss;
 	     } finally {
 	         // Always close the folder (ignore close errors)
@@ -163,5 +170,4 @@ public class OtpFlow {
                 .replaceAll("\\s+", " ")        // collapse whitespace
                 .trim();
  	}
-
 }
