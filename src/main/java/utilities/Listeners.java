@@ -10,7 +10,7 @@ public class Listeners extends BasePage implements ITestListener {
 	public Listeners() throws IOException {
 		super();
 	}
-
+	
 	@Override
 	public void onTestFailure(ITestResult result) {
 
@@ -20,5 +20,4 @@ public class Listeners extends BasePage implements ITestListener {
 			e.printStackTrace();
 		}
 	}
-
 }
