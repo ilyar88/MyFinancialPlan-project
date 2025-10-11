@@ -1,7 +1,6 @@
 package utilities;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,10 +20,10 @@ public class WaitForElement {
 	
 	public static void waitFor(String forElement, By locator, int seconds) {
 		// Temporarily disable implicit wait to avoid it compounding with explicit wait
-        _driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+		 _driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         
         try {
-            WebDriverWait wait = new WebDriverWait(_driver, seconds);
+        	WebDriverWait wait = new WebDriverWait(_driver, Duration.ofSeconds(seconds));
             switch (For.parse(forElement)) {
                 case ELEMENT_EXISTS:
                     wait.until(ExpectedConditions.presenceOfElementLocated(locator)); break;
@@ -37,13 +36,13 @@ public class WaitForElement {
             }
         } finally {
             // Always restore the previously configured implicit wait
-            _driver.manage().timeouts().implicitlyWait(_seconds, TimeUnit.SECONDS);
+        	_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
           }
     }
 	
 	public static WebElement delayWait(WebElement element, int delaySeconds, int timeoutSeconds) {
 	    try {
-	        _driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+	    	 _driver.manage().timeouts().implicitlyWait(Duration.ZERO);
 
 	        FluentWait<WebDriver> wait = new FluentWait<>(_driver)
 	            .withTimeout(Duration.ofSeconds(delaySeconds + timeoutSeconds))
@@ -58,7 +57,7 @@ public class WaitForElement {
 	            return element.isDisplayed() ? element : null;
 	        });
 	    } finally {
-	        _driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	    	_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
 	    }
 	}
 
