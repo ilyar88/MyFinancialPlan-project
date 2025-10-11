@@ -21,6 +21,7 @@ import jakarta.mail.search.FromStringTerm;
 import jakarta.mail.search.ReceivedDateTerm;
 import utilities.*;
 import extensions.*;
+import io.qameta.allure.Step;
 
 public class OtpFlow {
 	
@@ -33,7 +34,8 @@ public class OtpFlow {
 		_appPass = appPass;
 		_domain = domain;
     }
-
+	
+	@Step("Otp flow")
     public static void typePassword() {
         List<WebElement> elements = ManagePages.otp().otpPassword();
         String password = "";
