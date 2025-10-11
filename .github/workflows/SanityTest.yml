@@ -1,5 +1,4 @@
 name: Run financial website tests
-
 on:
   workflow_dispatch:
     inputs:
@@ -8,29 +7,65 @@ on:
         required: true
         default: "chrome"
         type: choice
-        options:
-          - chrome
-          - firefox
-          - edge
+        options: [chrome, firefox, edge]
 
+run-name: "Run sanity test with ${{ inputs.browser }} browser"
 jobs:
-  test:
+  SanityTest:
     runs-on: ubuntu-latest
+    environment: Web_sittings
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Run tests on selected browser
+      - name: Run tests + generate Allure report
         env:
           URL: ${{ secrets.URL }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-        run: mvn -Dbrowser=${{ github.event.inputs.browser }} test
+        run: |
+          mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
+
+      - name: Output test results (Surefire report)
+        if: always()
+        shell: bash
+        run: |
+          XML="target/surefire-reports/testng-results.xml"
+          FILE="target/surefire-reports/Suite/SanityTest.html"
+
+          {
+            echo "### Test results"
+            if [[ -f "$XML" ]]; then
+            line=$(grep -o '<testng-results[^>]*>' "$XML" || true)
+            total=$(echo "$line"   | grep -o 'total="[0-9]\+"'   | sed 's/[^0-9]//g')
+            passed=$(echo "$line"  | grep -o 'passed="[0-9]\+"'  | sed 's/[^0-9]//g')
+            failed=$(echo "$line"  | grep -o 'failed="[0-9]\+"'  | sed 's/[^0-9]//g')
+            skipped=$(echo "$line" | grep -o 'skipped="[0-9]\+"' | sed 's/[^0-9]//g')
+            ignored=$(echo "$line" | grep -o 'ignored="[0-9]\+"' | sed 's/[^0-9]//g')
+            echo "| Total | Passed | Failed | Skipped | Ignored |"
+            echo "|------:|------:|------:|-------:|-------:|"
+            echo "| ${total:-0} | ${passed:-0} | ${failed:-0} | ${skipped:-0} | ${ignored:-0} |"
+          else
+            echo "_No TestNG XML found at $XML_"
+          fi
+
+          if [[ -f "$FILE" ]]; then
+            echo "## SanityTest.html"
+            echo "<details><summary>View SanityTest.html</summary>"
+            sed -n '/<table/,/<\/table>/p' "$FILE"
+            echo "</details>"
+          else
+            echo "Not found: $FILE"
+          fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Allure report (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Allure report"
+          path: target/site/allure-maven-plugin
+          retention-days: 7
