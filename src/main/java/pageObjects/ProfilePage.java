@@ -12,11 +12,7 @@ public class ProfilePage {
 	public ProfilePage(WebDriver driver) {
 		_driver = driver;
     }
-	
-    public WebElement header() {
-        return _driver.findElement(By.cssSelector("h1.MuiTypography-root.MuiTypography-h1.css-h3u9dv-MuiTypography-root"));
-    }
-    
+	   
     public WebElement firstName() {
         return _driver.findElement(By.cssSelector("input[name='firstName']"));
     }
@@ -31,6 +27,14 @@ public class ProfilePage {
     
     public List<WebElement> dropdowns() {
     	return _driver.findElements(By.cssSelector("select.MuiNativeSelect-select"));
+    }
+    
+    public WebElement kidsCount() {
+        return _driver.findElement(By.cssSelector("input[name='kids.count']"));
+    }
+    
+    public List<WebElement> ages() {
+        return _driver.findElements(By.cssSelector("input[name^='kids.ages']"));
     }
     
     public WebElement createProfile() {
