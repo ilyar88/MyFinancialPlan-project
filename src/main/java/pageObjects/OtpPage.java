@@ -13,7 +13,7 @@ public class OtpPage {
     }
 	
     public WebElement registerImage() {
-        return _driver.findElement(By.cssSelector("img[alt='empty content']"));
+        return _driver.findElement(By.cssSelector("img[src='/assets/register2-C_iQ8INp.webp']"));
     }
     
     public List<WebElement> otpPassword() {
@@ -26,6 +26,10 @@ public class OtpPage {
     
     public WebElement resendPassword() {
         return _driver.findElement(By.cssSelector("a.MuiLink-root.MuiLink-underlineHover"));
+    }
+    
+    public WebElement loginPage() {
+        return _driver.findElement(By.cssSelector("a[href='/auth/login']"));
     }
     
     public WebElement passwordAlert() {
