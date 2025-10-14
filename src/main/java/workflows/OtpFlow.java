@@ -21,13 +21,13 @@ import jakarta.mail.search.FromStringTerm;
 import jakarta.mail.search.ReceivedDateTerm;
 import utilities.*;
 import extensions.*;
-import io.qameta.allure.Step;
+import io.qameta.allure.Allure;
 
 public class OtpFlow {
 	
-	private static String _user;
-	private static String _appPass;
-	private static String _domain;
+	static String _user;
+	static String _appPass;
+	static String _domain;
 	
 	public static void setOtp(String user,String appPass ,String domain) {
 		_user = user;
@@ -35,34 +35,36 @@ public class OtpFlow {
 		_domain = domain;
     }
 	
-	@Step("Otp flow")
-    public static void typePassword() {
-        List<WebElement> elements = ManagePages.otp().otpPassword();
-        String password = "";
-        final long deadline = System.currentTimeMillis() + 10_000; // 10 seconds
-        final long pollEveryMs = 1_000;
+	public static void typePassword() {
+	    Allure.step("OTP flow", () -> {
+	        List<WebElement> elements = ManagePages.otp().otpPassword();
+	        String password = "";
+	        final long deadline = System.currentTimeMillis() + 10_000; // 10 seconds
+	        final long pollEveryMs = 1_000;
 
-        try {
-            while (System.currentTimeMillis() < deadline && (password == null || password.isBlank())) {
-                password = getPassword(); 
-                if (password == null || password.isBlank()) Thread.sleep(pollEveryMs);
-            }
-            // If still empty → fail early (don’t try to charAt)
-            if (password == null || password.isBlank()) {
-                Verifications.assertFailed("OTP password not found in the mail within timeout.");
-            }
-            for (int i = 0; i < elements.size(); i++) {
-                UiActions.enterText(elements.get(i), String.valueOf(password.charAt(i)));
-            }
-            
-            UiActions.click(ManagePages.otp().verifyPassword());
-            WaitForElement.delayWait(ManagePages.otp().passwordAlert(), 1, 10);
-            Verifications.isDisplayed(ManagePages.otp().passwordAlert(), false);
-            
-        } catch (Exception e) {
-        	Verifications.assertFailed("Failed while waiting/typing OTP: " + e.getMessage());
-        }
-    }
+	        try {
+	            while (System.currentTimeMillis() < deadline && (password == null || password.isBlank())) {
+	                password = getPassword();
+	                if (password == null || password.isBlank()) Thread.sleep(pollEveryMs);
+	            }
+
+	            if (password == null || password.isBlank()) {
+	                Verifications.assertFailed("OTP password not found in the mail within timeout.");
+	            }
+
+	            for (int i = 0; i < elements.size(); i++) {
+	                UiActions.enterText(elements.get(i), String.valueOf(password.charAt(i)));
+	            }
+
+	            UiActions.click(ManagePages.otp().verifyPassword());
+	            WaitForElement.delayWait(ManagePages.otp().passwordAlert(), 1, 10);
+	            Verifications.isDisplayed(ManagePages.otp().passwordAlert(), false);
+
+	        } catch (Exception e) {
+	            Verifications.assertFailed("Failed while waiting/typing OTP: " + e.getMessage());
+	        }
+	    });
+	}
 
  // Returns a string with the (last) 6-digit OTP found in today's emails
  // from senders whose address contains "@{domain}". If no match → "".
