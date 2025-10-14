@@ -1,4 +1,6 @@
 name: Run financial website tests
+
+# Manual trigger with a browser chooser
 on:
   workflow_dispatch:
     inputs:
@@ -9,26 +11,36 @@ on:
         type: choice
         options: [chrome, firefox, edge]
 
-run-name: "Run sanity test with ${{ inputs.browser }} browser"
+run-name: "Run E2E test on ${{ inputs.browser }} browser"
+
 jobs:
   SanityTest:
     runs-on: ubuntu-latest
     environment: Web_sittings
 
     steps:
+      # Check out repository code
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: 17 }
 
+      # Set up Java 17 (Temurin distribution)
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # Run tests and generate Allure report
       - name: Run tests + generate Allure report
+        # Expose needed secrets as process env vars for the Maven run
         env:
           URL: ${{ secrets.URL }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
+          # Clean, run tests with selected browser, then build Allure report
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
+      # Summarize HTML report in the job summary
       - name: Output test results (Surefire report)
         if: always()
         shell: bash
@@ -38,30 +50,37 @@ jobs:
 
           {
             echo "### Test results"
-            if [[ -f "$XML" ]]; then
-            line=$(grep -o '<testng-results[^>]*>' "$XML" || true)
-            total=$(echo "$line"   | grep -o 'total="[0-9]\+"'   | sed 's/[^0-9]//g')
-            passed=$(echo "$line"  | grep -o 'passed="[0-9]\+"'  | sed 's/[^0-9]//g')
-            failed=$(echo "$line"  | grep -o 'failed="[0-9]\+"'  | sed 's/[^0-9]//g')
-            skipped=$(echo "$line" | grep -o 'skipped="[0-9]\+"' | sed 's/[^0-9]//g')
-            ignored=$(echo "$line" | grep -o 'ignored="[0-9]\+"' | sed 's/[^0-9]//g')
-            echo "| Total | Passed | Failed | Skipped | Ignored |"
-            echo "|------:|------:|------:|-------:|-------:|"
-            echo "| ${total:-0} | ${passed:-0} | ${failed:-0} | ${skipped:-0} | ${ignored:-0} |"
-          else
-            echo "_No TestNG XML found at $XML_"
-          fi
 
-          if [[ -f "$FILE" ]]; then
-            echo "## SanityTest.html"
-            echo "<details><summary>View SanityTest.html</summary>"
-            sed -n '/<table/,/<\/table>/p' "$FILE"
-            echo "</details>"
-          else
-            echo "Not found: $FILE"
-          fi
+            if [[ -f "$XML" ]]; then
+              # In the testng-results.xml file extract counters
+              line=$(grep -o '<testng-results[^>]*>' "$XML" || true)
+              total=$(echo "$line"   | grep -o 'total="[0-9]\+"'   | sed 's/[^0-9]//g')
+              passed=$(echo "$line"  | grep -o 'passed="[0-9]\+"'  | sed 's/[^0-9]//g')
+              failed=$(echo "$line"  | grep -o 'failed="[0-9]\+"'  | sed 's/[^0-9]//g')
+              skipped=$(echo "$line" | grep -o 'skipped="[0-9]\+"' | sed 's/[^0-9]//g')
+              ignored=$(echo "$line" | grep -o 'ignored="[0-9]\+"' | sed 's/[^0-9]//g')
+
+              # Create a compact test result table
+              echo "| Total | Passed | Failed | Skipped | Ignored |"
+              echo "|------:|------:|------:|-------:|-------:|"
+              echo "| ${total:-0} | ${passed:-0} | ${failed:-0} | ${skipped:-0} | ${ignored:-0} |"
+            else
+              echo "_No TestNG XML found at $XML_"
+            fi
+
+            # If the HTML exists, show just the main table inside a collapsible section
+            if [[ -f "$FILE" ]]; then
+              echo "## SanityTest.html"
+              echo "<details><summary>View SanityTest.html</summary>"
+              # Print only the first <table> block (usually the summary)
+              sed -n '/<table/,/<\/table>/p' "$FILE"
+              echo "</details>"
+            else
+              echo "Not found: $FILE"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
+      # Keep the full Allure report folder as a downloadable artifact
       - name: Upload Allure report (artifact)
         if: always()
         uses: actions/upload-artifact@v4
