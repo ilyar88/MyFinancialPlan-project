@@ -16,15 +16,15 @@ public class RegisterPage {
     }
     
     public WebElement emailAddress() {
-    	return _driver.findElement(By.cssSelector("input[name='email'][type='text']"));
+    	return _driver.findElement(By.cssSelector("input[name='email']"));
     }
 
     public WebElement password() {
-    	return _driver.findElement(By.cssSelector("input[name='password'][type='password']"));
+    	return _driver.findElement(By.cssSelector("input[name='password']"));
     }
     
     public WebElement passwordConfirmation() {
-    	return _driver.findElement(By.cssSelector("input[name='passwordConfirmation'][type='password']"));
+    	return _driver.findElement(By.cssSelector("input[name='passwordConfirmation']"));
     }
     
     public WebElement CreateAccount() {
@@ -32,6 +32,6 @@ public class RegisterPage {
     }
     
     public WebElement fastRegistration() {
-    	return _driver.findElement(By.cssSelector("button#\\:rl\\:"));
+    	return _driver.findElement(By.cssSelector("button#\\:r1\\:"));
     }
 }
