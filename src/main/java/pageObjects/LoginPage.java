@@ -17,11 +17,11 @@ public class LoginPage {
     }
     
     public WebElement emailAddress() {
-        return _driver.findElement(By.cssSelector("input[type='text'][name='email']"));
+        return _driver.findElement(By.cssSelector("input[name='email']"));
     }
     
     public WebElement password() {
-        return _driver.findElement(By.cssSelector("input[type='password']"));
+        return _driver.findElement(By.cssSelector("input[name='password']"));
     }
     
     public WebElement login() {
@@ -29,7 +29,7 @@ public class LoginPage {
     }
     
     public WebElement fastLogin() {
-        return _driver.findElement(By.cssSelector("button#\\:r7\\:"));
+        return _driver.findElement(By.cssSelector("button#\\:r1n\\:"));
     }
     
     public WebElement resetPassword() {
