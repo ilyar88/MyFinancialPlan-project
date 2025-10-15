@@ -14,7 +14,7 @@ on:
 run-name: "Run E2E test on ${{ inputs.browser }} browser"
 
 jobs:
-  E2E:
+  E2E test:
     runs-on: ubuntu-latest
     environment: Web_sittings
 
