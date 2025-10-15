@@ -58,8 +58,6 @@
         <version>3.5.3</version>
         <configuration>
 		  <testFailureIgnore>true</testFailureIgnore>
-          <forkCount>0</forkCount>
-          <reuseForks>false</reuseForks>
           <suiteXmlFiles>
             <suiteXmlFile>testng.xml</suiteXmlFile>
           </suiteXmlFiles>
