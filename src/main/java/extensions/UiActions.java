@@ -1,7 +1,5 @@
 package extensions;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -57,11 +55,9 @@ public class UiActions {
 
     public static String getText(WebElement elem) {
     	//Search for number in the text
-    	final Pattern NUM = Pattern.compile("\\d[\\d\\s,]*(?:[\\.,]\\d+)?");
-    	String t = elem.getText();
-        Matcher m = NUM.matcher(t);
-        //If a number is found return it; otherwise return the full text
-        String r = m.find() ? m.group() : t;
-        return Allure.step("Element text: \"" + t + "\" ⇒ \"" + r + "\"", () -> r);
+        String t = elem.getText();
+        String digits = t.replaceAll("\\D+", "");
+        String r = digits.isEmpty() ? t : digits;
+        return Allure.step("Element text: " + r, () -> r);
     }
 }
