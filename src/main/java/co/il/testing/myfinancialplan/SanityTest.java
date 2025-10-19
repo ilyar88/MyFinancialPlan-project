@@ -27,7 +27,7 @@ public class SanityTest extends BasePage {
 	@Description("User login to the website with credentials.")
 	@Test(priority = 1, description = "User login to website")
 	public void userLoginTest() {
-		LoginFlow.userLogin(prop.getProperty("username"),prop.getProperty("password"));	
+		LoginFlow.userLogin(prop.getProperty("username"),prop.getProperty("password"), "/auth/verify");	
 		OtpFlow.typePassword();
 	}
 	
