@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import io.qameta.allure.Allure;
-import utilities.ManagePages;
+import utilities.ElementUtil;
 
 public class Verifications {
 
@@ -17,8 +17,8 @@ public class Verifications {
 
     public static void verifyText(String actual, String expected) {
         Allure.step("Verify test: " + actual + " is in " + expected, () -> {
-            Assert.assertTrue(expected != null && expected.contains(actual),
-                    "Verify text failed: " + actual + " is not in: " + expected);
+            Assert.assertTrue(actual != null && expected != null && actual.contains(expected),
+                    "Verify text failed: " + expected + " does not contain: " + actual);
         });
     }
 
@@ -29,11 +29,10 @@ public class Verifications {
     }
 
     public static void isDisplayed(WebElement elem, boolean expected) {
-        Allure.step("Verify element display: " + ManagePages.locatorName(elem), () -> {
+        Allure.step("Verify element display: " + ElementUtil.name(elem), () -> {
             boolean actual = elem != null && elem.isDisplayed();
             Assert.assertEquals(actual, expected,
-                    "Verify display failed, element: " + ManagePages.locatorName(elem) +
-                    " expected displayed = " + expected + " but was " + actual);
+                    "Verify display failed, element: " + ElementUtil.name(elem));
         });
     }
 

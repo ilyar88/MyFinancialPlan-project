@@ -1,17 +1,18 @@
 package extensions;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import io.qameta.allure.Allure;
-import utilities.ManagePages;
+import utilities.ElementUtil;
 
 public class UiActions {
 
     public static void click(WebElement elem) {
     	
-        Allure.step("Click on element (" + ManagePages.locatorName(elem) + ")", () -> elem.click());
+        Allure.step("Click on element (" + ElementUtil.name(elem) + ")", () -> elem.click());
     }
 
     public static void enterText(WebElement elem, String text) {
@@ -23,15 +24,17 @@ public class UiActions {
             }
         }
 
-        Allure.step("Enter text (" + ManagePages.locatorName(elem) + "): " + shown, () -> {
-            elem.clear();
+        Allure.step("Enter text (" + ElementUtil.name(elem) + "): " + shown, () -> {
+        	elem.click();                               
+            elem.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            elem.sendKeys(Keys.DELETE); // Clear the text
             elem.sendKeys(text);
         });
     }
 
 
     public static void selectOption(WebElement elem, String option, String value) {
-        Allure.step("Select option (" + ManagePages.locatorName(elem) + "): " + getText(elem), () -> {
+        Allure.step("Select option (" + ElementUtil.name(elem) + "): " + getText(elem), () -> {
             Select dropdown = new Select(elem);
             switch (option) {
                 case "value":
