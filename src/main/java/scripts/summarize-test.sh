@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Summarize TestNG + a slice of the HTML report into the GitHub Actions job summary.
 
-XML="target/surefire-reports/testng-results.xml"
-FILE="target/surefire-reports/Suite/SanityTest.html"
+XML="./target/surefire-reports/testng-results.xml"
+FILE="./target/surefire-reports/Suite/SanityTest.html"
 
 {
   echo "### Test results"
