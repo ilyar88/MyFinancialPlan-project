@@ -41,12 +41,12 @@ jobs:
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
       - name: Add executable permission to the script
-        run: chmod +x scripts/summarize-test.sh
+        run: chmod +x ./src/main/java/scripts/summarize-test.sh
 
       # Summarize HTML report in the job summary
       - name: Output test results (Surefire report)
         if: always()
-        run: scripts/summarize-test.sh
+        run: ./src/main/java/scripts/summarize-test.sh
         shell: bash
 
       # Keep the full Allure report folder as a downloadable artifact
