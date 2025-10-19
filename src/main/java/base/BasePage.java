@@ -22,7 +22,7 @@ import workflows.OtpFlow;
 @Listeners({AllureTestNg.class, utilities.Listeners.class })
 public class BasePage {
     /** Base test class: loads config, initializes WebDriver and handles teardown. */
-	static WebDriver driver;
+	protected static WebDriver driver;
     protected Properties prop;
 
     public BasePage() throws IOException {
@@ -61,7 +61,7 @@ public class BasePage {
             int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
             ManagePages.init(driver);
             WaitForElement.init(driver, waitSeconds);
-            OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"), "gmail.com");
+            OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"), "myfinancialplan.co.il");
         });
     }
 
