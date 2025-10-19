@@ -61,7 +61,7 @@ public class BasePage {
             int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
             ManagePages.init(driver);
             WaitForElement.init(driver, waitSeconds);
-            OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"), "myfinancialplan.co.il");
+            OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"),prop.getProperty("Domain"));
         });
     }
 
