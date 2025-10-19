@@ -1,16 +1,15 @@
 package co.il.testing.myfinancialplan;
 
 import java.io.IOException;
-
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
 import base.BasePage;
+//import extensions.Verifications;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import workflows.RegistrationFlow;
+import workflows.LoginFlow;
+import workflows.OtpFlow;
 
 public class AdvancedTest extends BasePage {
 
@@ -18,21 +17,19 @@ public class AdvancedTest extends BasePage {
 		super();
 	}
 	
-	@Feature("Registration")
+	@Feature("Login")
 	@Severity(SeverityLevel.CRITICAL)
-	@Description("User register to the website with credentials (TTD test).")
-	@Ignore("Skip user registration TTD test")
-	@Test(description = "User register")
-	public void userRegisterTest() {
-		RegistrationFlow.userRegister(prop.getProperty("username"),prop.getProperty("password"));		
+	@Description("User login to the website with credentials (TDD).")
+	@Test(priority = 1, description = "User login to website",dataProvider = "loginData", dataProviderClass = LoginFlow.class)
+	public void userLoginTest_TDD(String username, String password, String uri) {
+		LoginFlow.userLogin_TDD(username, password,uri);
 	}
 	
 	@Feature("OTP")
 	@Severity(SeverityLevel.CRITICAL)
-	@Description("OTP validation")
-	@Ignore("Skip OTP validation")
-	@Test(description = "OTP")
-	public void otpTest() {
-			
+	@Description("OTP validation (TDD).")
+	@Test(priority = 2, description = "OTP")
+	public void otpTest_TDD() {
+		OtpFlow.typePassword();
 	}
 }
