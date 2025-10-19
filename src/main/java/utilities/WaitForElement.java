@@ -40,6 +40,19 @@ public class WaitForElement {
           }
     }
 	
+	public static void waitUntilUrlContains(String uri) {
+		_driver.manage().timeouts().implicitlyWait(Duration.ZERO);
+		try
+		{
+		    new WebDriverWait(_driver, Duration.ofSeconds(5))
+	        .until(ExpectedConditions.urlContains(uri));
+		}
+		finally {
+			_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
+		}
+	}
+
+	
 	public static WebElement delayWait(WebElement element, int delaySeconds, int timeoutSeconds) {
 	    try {
 	    	 _driver.manage().timeouts().implicitlyWait(Duration.ZERO);
@@ -60,8 +73,6 @@ public class WaitForElement {
 	    	_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
 	    }
 	}
-
-
 	
 	enum For {
 	    ELEMENT_EXISTS, ELEMENT_DISPLAYED, ELEMENT_CLICKABLE;
