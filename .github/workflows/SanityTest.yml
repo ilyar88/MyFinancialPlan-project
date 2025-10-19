@@ -40,8 +40,8 @@ jobs:
         run: |
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
-      - name: Make summary script executable
-        run: chmod +x summarize-test.sh
+      - name: Add executable permission to the script
+        run: chmod +x scripts/summarize-test.sh
 
       # Summarize HTML report in the job summary
       - name: Output test results (Surefire report)
