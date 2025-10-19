@@ -35,9 +35,13 @@ jobs:
           URL: ${{ secrets.URL }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
+          DOMAIN: ${{ secrets.DOMAIN }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
+
+      - name: Make summary script executable
+        run: chmod +x summarize-test.sh
 
       # Summarize HTML report in the job summary
       - name: Output test results (Surefire report)
