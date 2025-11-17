@@ -18,25 +18,25 @@ public class ProfilePage {
     }
     
     public WebElement age() {
-        return _driver.findElement(By.cssSelector("input[name='age']"));
+        return _driver.findElement(By.cssSelector("input[name='user-age-input']"));
     }
     
     public WebElement lastName() {
         return _driver.findElement(By.cssSelector("input[name='lastName']"));
     }
-    
+    // Dropdowns: 1. Marital status; 2. Gender; 3. Single breadwinner; 4. Residential area; 5. City type; 6. Type of residence
     public List<WebElement> dropdowns() {
     	return _driver.findElements(By.cssSelector("select.MuiNativeSelect-select"));
     }
     
     public WebElement kidsCount() {
-        return _driver.findElement(By.cssSelector("input[name='kids.count']"));
+        return _driver.findElement(By.cssSelector("input[name='kids-count-input']"));
     }
     
     public List<WebElement> ages() {
-        return _driver.findElements(By.cssSelector("input[name^='kids.ages']"));
+    	return _driver.findElements(By.cssSelector("input[placeholder='1-120']"));
     }
-    
+
     public WebElement createProfile() {
         return _driver.findElement(By.cssSelector("button[type='submit']"));
     }
