@@ -1,12 +1,13 @@
 package utilities;
 
 import java.time.Duration;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import extensions.Verifications;
 
 public class WaitForElement {
 	
@@ -18,7 +19,7 @@ public class WaitForElement {
 		_seconds = seconds;
     }
 	
-	public static void waitFor(String forElement, By locator, int seconds) {
+	public static void waitFor(WebElement elem, String forElement, int seconds) {
 		// Temporarily disable implicit wait to avoid it compounding with explicit wait
 		 _driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         
@@ -26,11 +27,11 @@ public class WaitForElement {
         	WebDriverWait wait = new WebDriverWait(_driver, Duration.ofSeconds(seconds));
             switch (For.parse(forElement)) {
                 case ELEMENT_EXISTS:
-                    wait.until(ExpectedConditions.presenceOfElementLocated(locator)); break;
+                	wait.until(d -> elem.isEnabled()); break;
                 case ELEMENT_DISPLAYED:
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(locator)); break;
+                	wait.until(ExpectedConditions.visibilityOf(elem)); break;
                 case ELEMENT_CLICKABLE:
-                    wait.until(ExpectedConditions.elementToBeClickable(locator)); break;
+                    wait.until(ExpectedConditions.elementToBeClickable(elem)); break;
                 default:
                     throw new IllegalArgumentException("Unsupported wait condition: " + forElement);
             }
@@ -42,37 +43,78 @@ public class WaitForElement {
 	
 	public static void waitUntilUrlContains(String uri) {
 		_driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-		try
-		{
+		try {
 		    new WebDriverWait(_driver, Duration.ofSeconds(5))
-	        .until(ExpectedConditions.urlContains(uri));
-		}
-		finally {
-			_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
+		        .until(ExpectedConditions.urlContains(uri));
+		} catch (Exception e) {
+		    String actual = _driver.getCurrentUrl();
+		    _driver.quit();
+		    Verifications.verifyText(actual, uri);
+		} finally {
+		    try { _driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds)); }
+		    catch (Exception ignore) {}
 		}
 	}
 
 	
 	public static WebElement delayWait(WebElement element, int delaySeconds, int timeoutSeconds) {
 	    try {
-	    	 _driver.manage().timeouts().implicitlyWait(Duration.ZERO);
+	        // Turn OFF implicit wait so it doesn't interfere with FluentWait’s polling.
+	        _driver.manage().timeouts().implicitlyWait(Duration.ZERO);
 
+	        // Build a FluentWait on the driver:
+	        // - total timeout = delay + real timeout
+	        // - poll every 1 second
 	        FluentWait<WebDriver> wait = new FluentWait<>(_driver)
 	            .withTimeout(Duration.ofSeconds(delaySeconds + timeoutSeconds))
-	            .pollingEvery(Duration.ofSeconds(1))
-	            .ignoring(Exception.class);
+	            .pollingEvery(Duration.ofSeconds(1));
 
+	        // Repeatedly evaluate this function until it returns a non-null WebElement
 	        return wait.until(d -> {
+	            // Compute how many seconds have elapsed (intended: since we started waiting)
 	            long elapsed = (System.currentTimeMillis() - delaySeconds) / 1000;
+
 	            if (elapsed < delaySeconds) {
-	                return null; // still in "delay" phase
+	                return null; // If still in "delay" phase return null
 	            }
+
+	            // After delay passes: return the element if it’s visible; otherwise keep polling
 	            return element.isDisplayed() ? element : null;
 	        });
+
 	    } finally {
-	    	_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
+	        // Restore the original implicit wait for the driver
+	        _driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(_seconds));
 	    }
 	}
+	//Wait for specific time
+	public static void waitFor(String timeText) {
+	    String[] parts = timeText.split(" ");
+	    int value = Integer.parseInt(parts[0]);
+	    String unit = parts[1];
+
+	    long millis;
+	    switch (unit) {
+	        case "Seconds":
+	            millis = value * 1000L;
+	            break;
+	        case "Minutes":
+	            millis = value * 60_000L;
+	            break;
+	        case "Hours":
+	            millis = value * 3_600_000L;
+	            break;
+	        default:
+	            throw new IllegalArgumentException("Invalid unit: " + unit);
+	    }
+
+	    try {
+	        Thread.sleep(millis);
+	    } catch (InterruptedException e) {
+	        Thread.currentThread().interrupt();
+	    }
+	}
+
 	
 	enum For {
 	    ELEMENT_EXISTS, ELEMENT_DISPLAYED, ELEMENT_CLICKABLE;
