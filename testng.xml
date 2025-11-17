@@ -7,8 +7,8 @@
 
   <test thread-count="5" name="SanityTest">
     <classes>
-    	<class name="co.il.testing.myfinancialplan.SanityTest"/>
-    <!-- <class name="co.il.testing.myfinancialplan.AdvancedTest"/> --> 
+    <!-- <class name="co.il.testing.myfinancialplan.SanityTest"/> -->
+    <class name="co.il.testing.myfinancialplan.AdvancedTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
