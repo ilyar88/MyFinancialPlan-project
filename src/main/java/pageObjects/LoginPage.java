@@ -27,9 +27,9 @@ public class LoginPage {
     public WebElement login() {
         return _driver.findElement(By.cssSelector("button[type='submit']"));
     }
-    
+
     public WebElement fastLogin() {
-        return _driver.findElement(By.cssSelector("button#\\:r1n\\:"));
+        return _driver.findElement(By.cssSelector("button#\\:rv\\:"));
     }
     
     public WebElement resetPassword() {
