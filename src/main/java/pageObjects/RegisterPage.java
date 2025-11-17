@@ -32,6 +32,6 @@ public class RegisterPage {
     }
     
     public WebElement fastRegistration() {
-    	return _driver.findElement(By.cssSelector("button#\\:r1\\:"));
+    	return _driver.findElement(By.cssSelector("button#\\:rt\\:"));
     }
 }
