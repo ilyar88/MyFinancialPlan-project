@@ -12,6 +12,7 @@ import org.openqa.selenium.edge.*;
 import org.openqa.selenium.firefox.*;
 import org.testng.annotations.*;
 import org.testng.annotations.Listeners;
+import extensions.UiActions;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Allure;
 import io.qameta.allure.testng.AllureTestNg;
@@ -45,40 +46,36 @@ public class BasePage {
     }
 
     /** Prepare browser before tests: create driver, set waits, open URL, init page objects. */
-    @BeforeClass(alwaysRun = true)
+    @BeforeSuite(alwaysRun = true)
     public void setup() {
-        Allure.step("Create a " + prop.getProperty("browser") + " WebDriver", () -> {
-            driver = getDriver();
-            driver.manage().window().setSize(new Dimension(1920, 1080));
-            int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitSeconds));
-        });
+    	
+        int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
 
-        driver.get(prop.getProperty("URL"));
-        Allure.step("Open website");
-
-        Allure.step("Initialize page utilities", () -> {
-            int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
-            ManagePages.init(driver);
-            WaitForElement.init(driver, waitSeconds);
-            OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"),prop.getProperty("Domain"));
-        });
+        driver = getDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitSeconds));
+        getUrl(prop.getProperty("URL"));  
+        
+        ManagePages.init(driver);
+        UiActions.init(driver);
+        WaitForElement.init(driver, waitSeconds);
+        OtpFlow.setRegex("(?s).*\\\\b(\\\\d{6})\\\\b(?!.*\\\\b\\\\d{6}\\\\b)");
+        OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"),prop.getProperty("Domain"));
     }
 
-    @AfterClass(alwaysRun = true)
+    @AfterSuite(alwaysRun = true)
     public void teardown() {
-        Allure.step("Quit WebDriver", () -> {
-            driver.quit();
-        });
+    	 try { if (driver != null) driver.quit(); }
+    	 catch (Exception ignore) {}
     }
 
-    // temp browser profile
+    //Use temp browser profile for the GitHub Actions
     private Path tempProfileDir;
 
     public WebDriver getDriver() {
         if (driver != null) return driver;
 
-        boolean headless = true;
+        boolean headless = false;
 
         if (tempProfileDir == null) {
             try {
@@ -118,6 +115,10 @@ public class BasePage {
         }
         return driver;
     }
+    
+	public static void getUrl(String url) {
+		driver.get(url);
+	}
 
     /** Take a screenshot, save it and attach to Allure. */
     public void takeSnapShot(String name) throws IOException {
@@ -127,7 +128,7 @@ public class BasePage {
             File destFile = Paths.get(
                     System.getProperty("user.dir"), "target", "screenshots",name, timestamp() + ".png").toFile();
 
-            // ensure folder exists
+            // Ensure folder exists
             destFile.getParentFile().mkdirs();
 
             FileUtils.copyFile(srcFile, destFile);
