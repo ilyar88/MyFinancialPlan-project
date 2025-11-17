@@ -32,7 +32,7 @@ public class OtpPage {
         return _driver.findElement(By.cssSelector("a[href='/auth/login']"));
     }
     
-    public WebElement passwordAlert() {
+    public WebElement alert() {
         return _driver.findElement(By.cssSelector("div[role='alert']"));
     }
 }
