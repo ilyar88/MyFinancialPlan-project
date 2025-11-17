@@ -7,17 +7,16 @@ import base.BasePage;
 
 public class Listeners extends BasePage implements ITestListener {
 
-	public Listeners() throws IOException {
-		super();
-	}
-	
-	@Override
-	public void onTestFailure(ITestResult result) {
+    public Listeners() throws IOException {
+        super();
+    }
 
-		try {
-			takeSnapShot(result.getName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void onTestFailure(ITestResult result) {
+        try {
+            takeSnapShot(result.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
