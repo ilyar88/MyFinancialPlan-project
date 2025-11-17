@@ -1,30 +1,54 @@
 package workflows;
 
-import java.util.List;
-import org.openqa.selenium.WebElement;
+import java.util.concurrent.atomic.AtomicInteger;
 import extensions.UiActions;
-//import extensions.Verifications;
 import io.qameta.allure.Allure;
+import pageObjects.ProfilePage;
 import utilities.ManagePages;
+import utilities.WaitForElement;
 
 public class ProfileCreationFlow {
-    public static void createProfile(String[] userProfile,String kidsCount, String[] ages) {
+    // Counts iterations from the DataProvider; when it reaches the end, run the verification.
+    private static final AtomicInteger ix = new AtomicInteger(0);
+
+    public static void createProfile(String[] profile, String[] dropdowns, String[] kids) {
         Allure.step("Create profile flow", () -> {
-        	UiActions.enterText(ManagePages.profile().firstName(),userProfile[0]);
-        	UiActions.enterText(ManagePages.profile().lastName(),userProfile[1]);
-        	UiActions.enterText(ManagePages.profile().age(),userProfile[2]);
-        	
-        	List<WebElement> dropdowns = ManagePages.profile().dropdowns();
-        	for (int i = 0; i < dropdowns.size(); i++) {
-        		UiActions.selectOption(dropdowns.get(i), "index", userProfile[i+3]);
-        	}
-        	
-        	UiActions.enterText(ManagePages.profile().kidsCount(), kidsCount);
-        	List<WebElement> textboxes = ManagePages.profile().ages();
-        	for (int i = 0; i < textboxes.size(); i++) {
-        		UiActions.enterText(textboxes.get(i), ages[i]);
-        	}
-        	UiActions.click(ManagePages.profile().createProfile());
+            // Index map: [0]=firstName, [1]=lastName, [2]=age,
+            // [3..9]=dropdowns (7 items), [10]=kidsCount, [11..]=kids ages
+            final int ddStart = 3, ddEnd = 10, kidsIx = 10, agesStart = 11;
+
+            int i = ix.getAndIncrement();
+            switch (i) {
+                case 0:
+                    UiActions.enterText(ManagePages.page(ProfilePage.class).firstName(), profile[i]);
+                    break;
+                case 1:
+                    UiActions.enterText(ManagePages.page(ProfilePage.class).lastName(), profile[i]);
+                    break;
+                case 2:
+                    UiActions.enterText(ManagePages.page(ProfilePage.class).age(), profile[i]);
+                    break;
+                default:
+                    if (i >= ddStart && i < ddEnd) { //Loop through all dropdown elements
+                        UiActions.selectOption(
+                            ManagePages.page(ProfilePage.class).dropdowns().get(i -ddStart),
+                            "value",dropdowns[i -ddStart]);
+                        
+                    } else if (i == kidsIx) {
+                        UiActions.enterText(ManagePages.page(ProfilePage.class).kidsCount(), kids[i -kidsIx]);
+                    } else {
+                        UiActions.enterText(
+                            ManagePages.page(ProfilePage.class).ages().get(i -agesStart),
+                            kids[i -agesStart]);
+                    }
+                    break;
+            }
+
+            // Run verification once, after the last DataProvider iteration.
+            if (ix.get() == profile.length + dropdowns.length + kids.length) {
+                UiActions.click(ManagePages.page(ProfilePage.class).createProfile());
+                WaitForElement.waitUntilUrlContains("/introduction");
+            }
         });
     }
 }
