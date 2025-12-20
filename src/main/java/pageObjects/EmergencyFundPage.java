@@ -19,13 +19,16 @@ public class EmergencyFundPage {
     public WebElement desiredAmount() {
         return _driver.findElement(By.cssSelector("input[name='targetAmount']"));
     }
-    //TextBox: How much liquid money do you have for an emergency fund?
-    public WebElement liquidAmount() {
-        return _driver.findElement(By.cssSelector("div.MuiAutocomplete-inputRoot input"));
+    //Textbox: Where is the liquid amount?
+    public WebElement currentAmount() {
+        return _driver.findElement(By.cssSelector("input[name='currentAmount']"));
     }
     //TextBox: In how many months will you want to save the balance?
-    public WebElement saveBalance() {
+    public WebElement saveMonths() {
         return _driver.findElement(By.cssSelector("input[name='monthsToSave']"));
     }
-
+    //h3: Monthly savings number 
+    public WebElement monthlySavings() {
+        return _driver.findElement(By.cssSelector("div.MuiTypography-h3"));
+    }
 }
