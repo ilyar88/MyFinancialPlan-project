@@ -15,18 +15,14 @@ public class FinancialGoalsPage {
 	
     public WebElement addGoal() {
         return _driver.findElement(By.cssSelector("button.MuiButton-containedPrimary"));
-    }
-    
-    public WebElement goalName() {
-        return _driver.findElement(By.cssSelector("input[role='combobox']"));
-    }
+    }  
     //TextBox: target amount
     public WebElement targetAmount() {
         return _driver.findElement(By.cssSelector("input[name='targetAmount']"));
     }
     //TextBox: if there is an amount dedicated to this expense?
-    public WebElement desiredAmount() {
-        return _driver.findElement(By.cssSelector("input#\\:r5l\\:"));
+    public WebElement currentAmount() {
+        return _driver.findElement(By.cssSelector("input[name='currentAmount']"));
     }
     //TextBox: every how many years does this happen?
     public WebElement yearsUntil() {
@@ -37,11 +33,15 @@ public class FinancialGoalsPage {
         return _driver.findElements(By.cssSelector("button.custom-button"));
     }
     //Save button
-    public WebElement save() {
+    public WebElement add() {
         return _driver.findElement(By.cssSelector("button[data-testid='fg-save']"));
     }
-    //Cancel button
-    public WebElement cancel() {
-        return _driver.findElement(By.cssSelector("button.MuiButton-disableElevation.css-wl6wy6-MuiButtonBase-root-MuiButton-root"));
+    //Confirm delete button for removing a goal
+    public WebElement confirmDelete() {
+        return _driver.findElement(By.cssSelector("button.MuiButton-contained.MuiButton-containedPrimary"));
+    }
+    //Finish button
+    public WebElement finishButton() {
+        return _driver.findElement(By.cssSelector("button.MuiButton-containedSuccess[type='button']"));
     }
 }
