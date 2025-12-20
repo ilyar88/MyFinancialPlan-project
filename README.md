@@ -8,6 +8,7 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 
 ![Architecture Diagram](Architecture.png)
 
+
 | Features                      | Description |
 |-------------------------------|-------------|
 | Login page                    | Includes the following:<br>1. Link to create an account<br>2. Email address text field<br>3. Password text field<br>4. Login button<br>5. Quick connect button<br>6. Forgot password link |
