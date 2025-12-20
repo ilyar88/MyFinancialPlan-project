@@ -1,54 +1,39 @@
 package workflows;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import extensions.UiActions;
 import io.qameta.allure.Allure;
 import pageObjects.ProfilePage;
-import utilities.ManagePages;
+import static utilities.ManagePages.page;
 import utilities.WaitForElement;
 
 public class ProfileCreationFlow {
-    // Counts iterations from the DataProvider; when it reaches the end, run the verification.
-    private static final AtomicInteger ix = new AtomicInteger(0);
 
-    public static void createProfile(String[] profile, String[] dropdowns, String[] kids) {
+	public static void createProfile(String[] profile, String[] dropdowns, String[] kids) {
         Allure.step("Create profile flow", () -> {
-            // Index map: [0]=firstName, [1]=lastName, [2]=age,
-            // [3..9]=dropdowns (7 items), [10]=kidsCount, [11..]=kids ages
-            final int ddStart = 3, ddEnd = 10, kidsIx = 10, agesStart = 11;
-
-            int i = ix.getAndIncrement();
-            switch (i) {
-                case 0:
-                    UiActions.enterText(ManagePages.page(ProfilePage.class).firstName(), profile[i]);
-                    break;
-                case 1:
-                    UiActions.enterText(ManagePages.page(ProfilePage.class).lastName(), profile[i]);
-                    break;
-                case 2:
-                    UiActions.enterText(ManagePages.page(ProfilePage.class).age(), profile[i]);
-                    break;
-                default:
-                    if (i >= ddStart && i < ddEnd) { //Loop through all dropdown elements
-                        UiActions.selectOption(
-                            ManagePages.page(ProfilePage.class).dropdowns().get(i -ddStart),
-                            "value",dropdowns[i -ddStart]);
-                        
-                    } else if (i == kidsIx) {
-                        UiActions.enterText(ManagePages.page(ProfilePage.class).kidsCount(), kids[i -kidsIx]);
-                    } else {
-                        UiActions.enterText(
-                            ManagePages.page(ProfilePage.class).ages().get(i -agesStart),
-                            kids[i -agesStart]);
-                    }
-                    break;
+        	     	
+            UiActions.enterText(page(ProfilePage.class).firstName(), profile[0]);
+            UiActions.enterText(page(ProfilePage.class).lastName(), profile[1]);
+            UiActions.enterText(page(ProfilePage.class).age(), profile[2]);
+            /** 
+             * 1) Gender
+             * 2) Sole breadwinner
+             * 3) Has children?
+             * 4) Region
+             * 5) City type
+             * 6) Residence type */
+            for (int i = 0; i < dropdowns.length; i++) {
+                UiActions.selectOption(page(ProfilePage.class).dropdowns().get(i),"value",dropdowns[i]);
             }
-
-            // Run verification once, after the last DataProvider iteration.
-            if (ix.get() == profile.length + dropdowns.length + kids.length) {
-                UiActions.click(ManagePages.page(ProfilePage.class).createProfile());
-                WaitForElement.waitUntilUrlContains("/introduction");
-            }
+            //Number of kids in the family
+            WaitForElement.waitFor(page(ProfilePage.class).kidsCount(),"ELEMENT_CLICKABLE", 10);
+            UiActions.click(page(ProfilePage.class).kidsCount());
+            UiActions.enterText(page(ProfilePage.class).kidsCount(), kids[0]);
+            for(int i=1; i < kids.length; i++)
+            	UiActions.enterText(page(ProfilePage.class).ages(i), kids[i]);
+            
+            WaitForElement.waitFor(page(ProfilePage.class).createProfile(),"ELEMENT_CLICKABLE", 10);
+            UiActions.click(page(ProfilePage.class).createProfile());
+            WaitForElement.waitUntilUrlContains("/introduction");
         });
     }
 }
