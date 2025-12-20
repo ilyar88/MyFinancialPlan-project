@@ -1,5 +1,6 @@
 package extensions;
 
+import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openqa.selenium.Keys;
@@ -72,16 +73,18 @@ public class UiActions {
     }
     
     //Move to the element that can't be seen in the page
-    public static void moveToElement(WebElement elem) {
-        Allure.step("Move mouse to element", 
-            () -> new Actions(_driver).moveToElement(elem).perform());        		
+    public static void moveToElement(WebElement elem, int num) {
+        Allure.step("Move mouse to element", () -> {
+            new Actions(_driver).moveToElement(elem).pause(Duration.ofMillis(num)).click().perform();
+        });
     }
 
+
     public static String getText(WebElement elem) {
-    	//Search for number in the text, if no number return all the text
-        String t = elem.getText();
-        String digits = t.replaceAll("\\D+", ""); //Return number if it’s in the text
-        String r = digits.isEmpty() ? t : digits;
+    	// Search for the first number in the text, if no number return all the text
+        String text = elem.getText();
+        Matcher num = Pattern.compile("-?\\d+").matcher(text);
+        String r = num.find() ? num.group() : text;
         return Allure.step("Element text: " + r, () -> r);
     }
 }
