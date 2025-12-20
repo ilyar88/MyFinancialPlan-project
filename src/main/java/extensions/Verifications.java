@@ -1,6 +1,5 @@
 package extensions;
 
-import java.util.regex.Pattern;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -17,8 +16,7 @@ public class Verifications {
 
     public static void verifyText(String actual, String expected) {
         Allure.step("Verify text: " + actual + " is in " + expected, () -> {
-            Assert.assertTrue(actual != null && expected != null &&
-                actual.matches(".*\\b" + Pattern.quote(expected) + "\\b.*"),
+            Assert.assertTrue(actual.contains(expected),
                 "Verify text failed: '" + actual + "', does not contain: '" + expected + "'");
         });
     }
@@ -34,15 +32,14 @@ public class Verifications {
         Allure.step("Verify element display: " + UiActions.elementName(elem), () -> {
             boolean actual = elem != null && elem.isDisplayed();
             Assert.assertEquals(actual, expected,
-                    "Verify display failed, element: " + UiActions.elementName(elem));
+                    "Verify display failed for element: " + UiActions.elementName(elem));
         });
     }
 
     public static void verifyTextSoft(String actual, String expected) {
     	SoftAssert softAssert = new SoftAssert();
         Allure.step("Verify soft assert text: " + actual + " is in " + expected, () -> {
-        	softAssert.assertTrue(actual != null && expected != null &&
-                    actual.matches(".*\\b" + Pattern.quote(expected) + "\\b.*"),
+        	softAssert.assertTrue(actual.contains(expected),
                     "Verify text failed: '" + actual + "', does not contain: '" + expected + "'");
         });
     }
