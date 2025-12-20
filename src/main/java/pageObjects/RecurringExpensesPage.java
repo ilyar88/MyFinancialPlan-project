@@ -13,12 +13,8 @@ public class RecurringExpensesPage {
 		_driver = driver;
     }
 	
-    public WebElement addIncome() {
-        return _driver.findElement(By.cssSelector("div.MuiBox-root.css-1fs5xc2 > div > button"));
-    }
-    //TextBox: recurring expense name
-    public WebElement incomeName() {
-        return _driver.findElement(By.cssSelector("input[role='combobox']"));
+    public WebElement addExpense() {
+        return _driver.findElements(By.cssSelector("button.MuiButton-containedPrimary")).get(1);
     }
     //TextBox: target amount
     public WebElement targetAmount() {
@@ -29,20 +25,26 @@ public class RecurringExpensesPage {
         return _driver.findElement(By.cssSelector("input[name='currentAmount']"));
     }
     //TextBox: every how many years does this happen?
-    public WebElement yearsUntil() {
+    public WebElement years() {
         return _driver.findElement(By.cssSelector("input[name='yearsUntilEvent']"));
+    }
+    public WebElement liquidAmount() {
+        return _driver.findElements(By.cssSelector("input[type='text'][role='combobox']")).get(1);
     }
     //Risk options: 1. Risk-free; 2. Medium risk; 3. High risk
     public List<WebElement> riskOptions() {
         return _driver.findElements(By.cssSelector("button.custom-button"));
     }
-    //Save button
-    public WebElement save() {
-        return _driver.findElement(By.cssSelector("button[type='submit']"));
+    // 1. Edit button 2. Delete button;
+    public List<WebElement> editButtons() {
+        return _driver.findElements(By.cssSelector("button.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall"));
     }
-    //Cancel button
-    public WebElement cancel() {
-        return _driver.findElement(By.cssSelector("button.MuiButton-disableElevation.css-wl6wy6-MuiButtonBase-root-MuiButton-root"));
+    //Monthly payment per risk calculation text
+    public WebElement monthlyPayment() {
+        return _driver.findElement(By.cssSelector("div.MuiAlert-message p"));
+    }
+    //Confirm delete button for removing a recurring expense
+    public WebElement confirmDelete() {
+        return _driver.findElement(By.cssSelector("button.MuiButtonBase-root.MuiButton-root.MuiLoadingButton-root"));
     }
 }
-
