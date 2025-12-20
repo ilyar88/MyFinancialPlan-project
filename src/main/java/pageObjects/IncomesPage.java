@@ -13,7 +13,7 @@ public class IncomesPage {
 		_driver = driver;
     }
 	//Large add income button
-    public WebElement addIncome() {
+    public WebElement addIncomeOrExpense() {
         return _driver.findElement(By.cssSelector("button.MuiButton-sizeLarge"));
     }
     //Circle add income button
@@ -22,14 +22,13 @@ public class IncomesPage {
     }
     //icons: 1. Revenue summary; 2. Monthly and annual expenses; 3. Emergency fund 4. Recurring expenses; 5. One-time expenses and goals
     public List<WebElement> icons() {
-        return _driver.findElements(By.cssSelector("text.MuiStepIcon-text"));
-        
+        return _driver.findElements(By.cssSelector("text.MuiStepIcon-text"));       
     }
-    //Name of the income in the dialog
-    public WebElement incomeName() {
+    //Name of the income or expense in the dialog
+    public WebElement name() {
         return _driver.findElement(By.cssSelector("input[role='combobox']"));
     }
-    //TextBox: Name amount the income in the dialog
+    //TextBox: name amount the income in the dialog
     public WebElement amount() {
         return _driver.findElement(By.cssSelector("input[name='amount']"));
     }
@@ -37,18 +36,20 @@ public class IncomesPage {
     public WebElement add() {
         return _driver.findElement(By.cssSelector("button[type='submit']"));
     }
-    //Add cancel in the dialog 
+    //Cancel button in the dialog 
     public WebElement cancel() {
         return _driver.findElement(By.cssSelector("button.MuiButton-outlined"));
     }
-    //Show the total amount balance amount for verifications
+    //Amount balance
     public WebElement balanceIncome() {
         return _driver.findElement(By.cssSelector("h6.MuiTypography-root"));
-    }
+    }//
+    //Total net summary
+    public WebElement netSummary() {
+        return _driver.findElement(By.cssSelector("div:nth-of-type(1) > h5"));
+    }//
     //Moving to the next section
     public WebElement nextButton() {
-        return _driver.findElement(By.cssSelector("button.MuiButton-containedPrimary[type='button']"));
+        return _driver.findElement(By.cssSelector("button.MuiButton-root.MuiButton-containedPrimary.MuiButton-sizeMedium"));
     }
-    
-
 }
