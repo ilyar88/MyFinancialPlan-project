@@ -17,49 +17,64 @@
   </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>4.35.0</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+
     <dependency>
       <groupId>io.github.bonigarcia</groupId>
       <artifactId>webdrivermanager</artifactId>
       <version>6.3.2</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
+<!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
     <dependency>
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-testng</artifactId>
       <version>2.16.0</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<!-- https://mvnrepository.com/artifact/org.testng/testng -->
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.11.0</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-mail -->
+<!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-mail -->
+<!-- Get text from mailbox -->
     <dependency>
       <groupId>org.eclipse.angus</groupId>
       <artifactId>angus-mail</artifactId>
-      <version>2.0.4</version>
-    </dependency>
+      <version>2.0.4</version>     
+    </dependency>  
+    
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>5.2.5</version>
+	</dependency>  
+    <!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers -->
+    <!-- k6 load testing container -->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>k6</artifactId>
+    <version>1.19.7</version>
+</dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- Runs tests with 'mvn test' and writes Allure results -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
         <configuration>
-		  <testFailureIgnore>true</testFailureIgnore>
+          <testFailureIgnore>true</testFailureIgnore>
           <suiteXmlFiles>
-            <suiteXmlFile>testng.xml</suiteXmlFile>
+            <suiteXmlFile>Suites/sanity.xml</suiteXmlFile>
+          <!--  <suiteXmlFile>Suites/advanced.xml</suiteXmlFile> 
+            <suiteXmlFile>Suites/load.xml</suiteXmlFile> -->
           </suiteXmlFiles>
           <systemPropertyVariables>
             <browser>${browser}</browser>
@@ -67,8 +82,7 @@
         </configuration>
       </plugin>
 
-      <!-- Allure Maven plugin to generate/serve reports -->
-     <plugin>
+      <plugin>
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-maven</artifactId>
         <version>2.16.0</version>
@@ -77,17 +91,19 @@
           <reportDirectory>${project.reporting.outputDirectory}/allure-maven-plugin</reportDirectory>
         </configuration>
       </plugin>
-      
-      <!-- Recreate the Allure results folder on every run -->
-      <plugin>
-  		<artifactId>maven-clean-plugin</artifactId>
-  		<version>3.3.2</version>
-  		<configuration>
-    	  <filesets>
-            <fileset><directory>${project.build.directory}/../allure-results</directory></fileset>
+
+       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.3.2</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${project.build.directory}/../allure-results</directory>
+            </fileset>
           </filesets>
-  		</configuration>
-	   </plugin>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 </project>
