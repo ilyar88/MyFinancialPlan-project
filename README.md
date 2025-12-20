@@ -33,9 +33,6 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 | Incomes page                         | — |
 | Monthly and annual expenses section  | — |
 | Emergency fund section               | — |
-| Emergency fund section               | — |
-| Emergency fund section               | — |
-| Emergency fund section               | — |
 | Multi-year recurring expenses        | — |
 | Financial goals section              | — |
 | Congratulation page                  | — |
