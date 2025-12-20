@@ -22,7 +22,7 @@ public class AdvancedTest extends BasePage {
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Reset password to user (TDD).")
 	@Test(priority = 1, description = "Reset password",dataProvider = "globalProvider", dataProviderClass = TestData.class)
-	public void resetPassword_TDD(String[] username, String[] password, String[] uri) {
+	public void resetPassword_TDD(String username, String[] password, String[] uri) {
 		ResetPasswordFlow.resetPassword(username, password, uri);
 	}
 	
