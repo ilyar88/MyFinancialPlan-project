@@ -33,7 +33,7 @@ public class OtpFlow {
 	public static String getText() throws Exception {
 
 	    final long deadline = System.currentTimeMillis() + 15_000; // total wait ~15s
-	    final long pollEveryMs = 3_000;                            // poll interval 3s
+	    final long pollEveryMs = 5_000;                            // poll interval 3s
 	    // Poll until text found or timeout reached
 	    while (System.currentTimeMillis() < deadline && (_text == null || _text.isBlank())) {
 	        Thread.sleep(pollEveryMs);
@@ -47,7 +47,7 @@ public class OtpFlow {
 	        List<WebElement> elements = ManagePages.page(OtpPage.class).otpPassword();
 	        // If first word is a number -> treat as wait time (e.g. "10 Minutes")
 	        if (password.split(" ")[0].matches("\\d+")) {
-	            WaitForElement.waitFor(password); // Wait for specific time
+	            WaitForElement.waitForTime(password); // Wait for specific time
 	            _text = "";
 	            
 	        } else _text = password;
@@ -100,7 +100,7 @@ public class OtpFlow {
 		        if (lines.length == 0) return sss;
 
 		        // Use the newest matching message
-		        Message m = lines[lines.length - 1];
+		        Message m = lines[lines.length-1];
 
 		        // Extract plain text from message (handles HTML/multipart)
 		        String body = htmlToText(m).trim();
