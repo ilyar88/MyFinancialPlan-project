@@ -50,16 +50,16 @@ public class BasePage {
     public void setup() {
     	
         int waitSeconds = Integer.parseInt(prop.getProperty("waitTime"));
-
+        
         driver = getDriver();
-        driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitSeconds));
-        getUrl(prop.getProperty("URL"));  
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get(prop.getProperty("URL")); 
         
         ManagePages.init(driver);
         UiActions.init(driver);
         WaitForElement.init(driver, waitSeconds);
-        OtpFlow.setRegex("(?s).*\\\\b(\\\\d{6})\\\\b(?!.*\\\\b\\\\d{6}\\\\b)");
+        OtpFlow.setRegex("(?s).*\\b(\\d{6})\\b(?!.*\\b\\d{6}\\b)");
         OtpFlow.setOtp(prop.getProperty("username"), prop.getProperty("appPassword"),prop.getProperty("Domain"));
     }
 
@@ -68,14 +68,14 @@ public class BasePage {
     	 try { if (driver != null) driver.quit(); }
     	 catch (Exception ignore) {}
     }
-
+    
     //Use temp browser profile for the GitHub Actions
     private Path tempProfileDir;
 
     public WebDriver getDriver() {
         if (driver != null) return driver;
 
-        boolean headless = false;
+        boolean headless = true;
 
         if (tempProfileDir == null) {
             try {
@@ -116,10 +116,6 @@ public class BasePage {
         return driver;
     }
     
-	public static void getUrl(String url) {
-		driver.get(url);
-	}
-
     /** Take a screenshot, save it and attach to Allure. */
     public void takeSnapShot(String name) throws IOException {
         Allure.step("Take snapshot", () -> {
