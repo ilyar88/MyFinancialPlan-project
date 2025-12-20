@@ -33,8 +33,8 @@ public class ProfilePage {
         return _driver.findElement(By.cssSelector("input[name='kids-count-input']"));
     }
     
-    public List<WebElement> ages() {
-    	return _driver.findElements(By.cssSelector("input[placeholder='1-120']"));
+    public WebElement ages(int index) {
+        return _driver.findElement(By.cssSelector(String.format("input[name='child-age-input-%d']", index-1)));
     }
 
     public WebElement createProfile() {
