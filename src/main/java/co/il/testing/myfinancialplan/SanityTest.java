@@ -15,7 +15,7 @@ public class SanityTest extends BasePage {
 
 	@Feature("Registration")
 	@Severity(SeverityLevel.CRITICAL)
-	@Description("User register to the website with credentials.")
+	@Description("Register to the website with credentials.")
 	@Ignore("Skip user registration.")
 	@Test(description = "User register")
 	public void userRegisterTest() {
@@ -24,7 +24,7 @@ public class SanityTest extends BasePage {
 	
 	@Feature("Login")
 	@Severity(SeverityLevel.CRITICAL)
-	@Description("User login to the website with credentials.")
+	@Description("Login to the website with credentials.")
 	@Test(priority = 1, description = "User login to website")
 	public void userLoginTest() {
 		LoginFlow.userLogin(prop.getProperty("username"),prop.getProperty("password"), "/auth/verify");	
