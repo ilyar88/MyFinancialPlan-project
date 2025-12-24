@@ -72,9 +72,9 @@
         <configuration>
           <testFailureIgnore>true</testFailureIgnore>
           <suiteXmlFiles>
-            <suiteXmlFile>Suites/sanity.xml</suiteXmlFile>
-          <!--  <suiteXmlFile>Suites/advanced.xml</suiteXmlFile> 
-            <suiteXmlFile>Suites/load.xml</suiteXmlFile> -->
+            <suiteXmlFile>Suites/Sanity.xml</suiteXmlFile>
+          <!--  <suiteXmlFile>Suites/Advanced.xml</suiteXmlFile> 
+            <suiteXmlFile>Suites/Load.xml</suiteXmlFile> -->
           </suiteXmlFiles>
           <systemPropertyVariables>
             <browser>${browser}</browser>
