@@ -11,7 +11,7 @@ public class ManagePages {
     public static void init(WebDriver driver) {
     	_driver = driver;
     }
-    // Creates and returns a page object instance of the given class using the WebDriver
+    // Creates and returns a page object instance of the given class using the WebDriver.
     public static <T> T page(Class<T> type) {
         try {
             return type.getConstructor(WebDriver.class).newInstance(_driver);
@@ -19,12 +19,12 @@ public class ManagePages {
             throw new RuntimeException("Can't create " + type.getSimpleName(), e);
         }
     }
-    // Open new browser tab
+    // Open new browser tab.
     public static void openNewTab(WebElement elem) {
         Actions actions = new Actions(_driver);
         actions.keyDown(Keys.CONTROL).click(elem).keyUp(Keys.CONTROL).perform();
     }
-    // Switch to the last browser tab
+    // Switch to the last browser tab.
     public static void switchToTab() {
         String lastHandle = null;
         
@@ -41,7 +41,7 @@ public class ManagePages {
 	public static String getUrl() {
 	    return _driver.getCurrentUrl();
 	}
-	//Navigate to previous URL
+	//Navigate to previous URL.
 	public static void goBack() {
 		_driver.navigate().back();
     }
