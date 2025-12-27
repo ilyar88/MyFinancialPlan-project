@@ -24,7 +24,7 @@ public class OtpPage {
         return _driver.findElement(By.cssSelector("button[type='submit']"));
     }
     
-    public WebElement resendPassword() {
+    public WebElement resetPassword() {
         return _driver.findElement(By.cssSelector("a.MuiLink-root.MuiLink-underlineHover"));
     }
     
