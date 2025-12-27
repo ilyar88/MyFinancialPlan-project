@@ -9,6 +9,7 @@ import utilities.WaitForElement;
 public class ProfileCreationFlow {
 
 	public static void createProfile(String[] profile, String[] dropdowns, String[] kids) {
+		
         Allure.step("Create profile flow", () -> {
         	     	
             UiActions.enterText(page(ProfilePage.class).firstName(), profile[0]);
