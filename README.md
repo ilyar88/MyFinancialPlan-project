@@ -7,7 +7,7 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 ## Project Overview
 
 ![Architecture Diagram](Architecture.png)
-<br>
+
 
 
 | Features                      | Description                    |
@@ -39,12 +39,39 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 | Join success page                    | Enable "I want to watch other people's financial plans." checkbox and redirect to the Home page                                   |
 | Home page                            | Navigate to the following links:<br>1. Home page<br>2. Profile<br>3. Path to goals and dreams<br>4. My plan<br>5. Other people’s plans<br>6. Report a problem<br>7. Suggestions for improvement<br>8. Contact us |
 | Notification icon                    | Click on the notifications icon and verify that each update you made appears in the notifications list.                    |
-| Actions (Deposit and withdrawal)     | — |
+| Actions (Deposit and withdrawal)     | Verify Deposit and Withdrawal functionality via "Path to goals and dreams" link. |                           
 
 ## Validation test
 
 | Test cases                           | Description              |
 |--------------------------------------|--------------------------|
-| Reset password page                  | — |
-| Registration page                    | — |
+| Reset password page                  | Execute reset password with different data |
+| Login page                           | Execute login page with different data  |
+| OTP page                             | Execute OTP with different data |
+| My plan page                         | Update incomes or expenses in my plan page with different data |
+
+## Load test
+
+| Test cases                           | Description              |
+|--------------------------------------|--------------------------|
+| Load test                            | Execute a load test with 10 virtual users and verify that the requests return a 200 status code                                   |
+
+## Infrastructure Highlights
+
+- **Page Object Design Pattern**
+- **Project Layers** (Extensions/Work Flows/Test Cases/TDD...)
+- **Support of different clients/browsers**
+- **Failure Mechanism**
+- **Common Functionality**
+- **External Files Support**
+- **Reporting System** (include screenshots)
+- **CI Support**
+
+## Tools & Frameworks
+- **Listeners** - used to generate Allure report with feature, severity, description, steps and for failure Mechanism
+- **Allure Reports** - main reporting system
+- **Grafana k6** - used for load testing when executed from a container
+
+
+
 
