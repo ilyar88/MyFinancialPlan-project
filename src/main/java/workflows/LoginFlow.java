@@ -9,7 +9,9 @@ import static utilities.ManagePages.page;
 public class LoginFlow {
 
     public static void userLogin(String email, String password, String uri) {
+    	
 		Allure.step("User login flow", () -> {
+			
 			UiActions.enterText(page(LoginPage.class).emailAddress(), email);
 	        UiActions.enterText(page(LoginPage.class).password(), password);
 	        UiActions.click(page(LoginPage.class).login());
