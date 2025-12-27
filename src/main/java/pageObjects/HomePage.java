@@ -42,4 +42,8 @@ public class HomePage {
     public List<WebElement> navigationButtons() {
     	return _driver.findElements(By.cssSelector("button.MuiBottomNavigationAction-root"));
     }
+    
+    public WebElement logout() {
+    	return _driver.findElement(By.cssSelector("a[href='/auth/login']"));
+    }
 }
