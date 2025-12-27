@@ -19,9 +19,10 @@ public class AdvancedTest extends BasePage {
 		super();
 	}
 	
+	@Feature("Reset password")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Reset password to user (TDD).")
-	@Test(priority = 1, description = "Reset password",dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Test(priority = 1, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void resetPassword_TDD(String username, String[] password, String[] uri) {
 		ResetPasswordFlow.resetPassword(username, password, uri);
 	}
@@ -30,7 +31,7 @@ public class AdvancedTest extends BasePage {
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("User login to the website with credentials (TDD).")
 	@Ignore("Skip user login.")
-	@Test(priority = 2, description = "User login to website",dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Test(priority = 2, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void userLoginTest_TDD(String username, String password, String uri) {
 		LoginFlow.userLogin_TDD(username, password,uri);
 	}
@@ -39,7 +40,7 @@ public class AdvancedTest extends BasePage {
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("OTP validation (TDD).")
 	@Ignore("Skip OTP validation.")
-	@Test(priority = 3, description = "OTP",dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Test(priority = 3, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void otpTest_TDD(String password, String uri) {
 		OtpFlow.typePassword(password,uri);
 	}
