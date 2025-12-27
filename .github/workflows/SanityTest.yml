@@ -37,11 +37,13 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           DOMAIN: ${{ secrets.DOMAIN }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          CREDIT: ${{ secrets.CREDIT }}
+          ID: ${{ secrets.ID }}
         run: |
           mvn clean -Dbrowser=${{ github.event.inputs.browser }} test allure:report
 
       - name: Add executable permission to the script
-        run: chmod +x ./src/main/java/scripts/summarize-test.sh
+        run: chmod +x ./src/main/java/scripts/summarize-test.sh "Sanity"
 
       # Summarize HTML report in the job summary
       - name: Output test results (Surefire report)
