@@ -3,7 +3,7 @@
 <suite name="Load" parallel="false">
   <test name="LoadTesting">
     <classes>
-      <class name="co.il.testing.myfinancialplan.LoadTesting"/>
+      <class name="co.il.testing.myfinancialplan.LoadTest"/>
     </classes>
   </test>
 </suite>
