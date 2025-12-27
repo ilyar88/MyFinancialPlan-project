@@ -41,6 +41,10 @@ public class ManagePages {
 	public static String getUrl() {
 	    return _driver.getCurrentUrl();
 	}
+	//Navigate to previous URL
+	public static void goBack() {
+		_driver.navigate().back();
+    }
     
     public static void closeTab() {
     	_driver.close();
