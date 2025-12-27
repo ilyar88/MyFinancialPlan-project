@@ -28,14 +28,14 @@ public class SanityTest extends BasePage {
 	@Test(priority = 1, description = "User login to website")
 	public void userLoginTest() {
 		LoginFlow.userLogin(prop.getProperty("username"),prop.getProperty("password"), "/auth/verify");	
-		OtpFlow.typePassword("","/introduction"); //Verify redirection from the OTP page to the introduction page.
+		OtpFlow.typePassword("","/home"); //Verify redirection from the OTP page to the introduction page.
 	}
 	
 	@Feature("Profile")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Create profile with personal details.")
 	@Ignore("Skip create profile")
-	@Test(priority = 2, description = "Create profile", dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Test(priority = 2, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void createProfileTest(String[] profile, String[] dropdowns, String[] kids) {
 	    ProfileCreationFlow.createProfile(profile,dropdowns,kids);
 	}
@@ -43,7 +43,8 @@ public class SanityTest extends BasePage {
 	@Feature("Introduction")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Open and close introduction goals.")
-	@Test(priority = 3, dependsOnMethods = "userLoginTest", description = "Introduction goals")
+	@Ignore("Skip introduction")
+	@Test(priority = 3)
 	public void introductionTest() {
 	    IntroductionFlow.introduction();
 	}
@@ -51,7 +52,8 @@ public class SanityTest extends BasePage {
 	@Feature("Incomes")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Add incomes.")
-	@Test(priority = 4, dependsOnMethods = "introductionTest", description = "Incomes", dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Ignore("Skip incomes")
+	@Test(priority = 4, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void addIncomesTest(String[] names, String[] amounts) {
 	    IncomesFlow.addIncomes(names, amounts);
 	}
@@ -59,7 +61,8 @@ public class SanityTest extends BasePage {
 	@Feature("Expenses")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Add month and year expenses.")
-	@Test(priority = 5, dependsOnMethods = "addIncomesTest", description = "Period expenses", dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Ignore("Skip Expenses")
+	@Test(priority = 5, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void periodExpensesTest(String categories, String[] names, String[] amounts) {
 	    ExpensesFlow.addExpenses(categories, names, amounts);
 	}
@@ -68,7 +71,7 @@ public class SanityTest extends BasePage {
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Add emergency fund.")
 	@Ignore("Skip emergency fund.")
-	@Test(priority = 6, description = "Emergency fund", dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Test(priority = 6, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void emergencyFundTest(String amount, String currentAmount, String liquidAmount, String month) {
 	    ExpensesFlow.emergencyFund(amount, currentAmount, liquidAmount, month);
 	}
@@ -76,7 +79,8 @@ public class SanityTest extends BasePage {
 	@Feature("Expenses")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Add recurring expense.")
-	@Test(priority = 7, description = "recurring expense", dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Ignore("Skip recurring expense")
+	@Test(priority = 7, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void recurringExpenseTest(String[] name, String[] targetAmount, String[] currentAmount, String[] liquidAmount,
     		String[] years) {
 	    ExpensesFlow.recurringExpense(name, targetAmount, currentAmount, liquidAmount,years);
@@ -85,10 +89,36 @@ public class SanityTest extends BasePage {
 	@Feature("Expenses")
 	@Severity(SeverityLevel.CRITICAL)
 	@Description("Add financial goals.")
-	@Ignore("Skip financial goals.")
-	@Test(priority = 8, description = "financial goals", dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Ignore("Skip financial goals")
+	@Test(priority = 8, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void financialGoalsTest(String[] name, String[] targetAmount, String[] currentAmount, String[] liquidAmount,
     		String[] years) {
 	    ExpensesFlow.financialGoals(name, targetAmount, currentAmount, liquidAmount,years);
+	}
+	
+	@Feature("Financial path")
+	@Severity(SeverityLevel.CRITICAL)
+	@Description("Choose path (basic, standard, Premium)")
+	@Ignore("Skip choose path.")
+	@Test(priority = 9, dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	public void choosePathTest(String name,String email, String phone) {
+	    ChoosePathFlow.choosePath(name, email, phone);
+	}
+	
+	@Feature("Checkout")
+	@Severity(SeverityLevel.CRITICAL)
+	@Description("Checkout with personal details.")
+	@Ignore("Skip Checkout process.")
+	@Test(priority = 10, dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	public void creditCheckoutTest(String credit, String year, String month, String id) {
+	    ChoosePathFlow.credit_checkout(credit, year, month, id);
+	}
+	
+	@Feature("Home page")
+	@Severity(SeverityLevel.CRITICAL)
+	@Description("Check home page options like: Navigation sidebar and notifications.")
+	@Test(priority = 11)
+	public void homePageTest() {
+	    HomeFlow.navigateSidebar();
 	}
 }
