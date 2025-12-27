@@ -7,6 +7,7 @@ import extensions.Verifications;
 import io.qameta.allure.Allure;
 import pageObjects.HomePage;
 import pageObjects.SumActionsPage;
+import utilities.ManagePages;
 import utilities.WaitForElement;
 
 public class HomeFlow {
@@ -48,49 +49,53 @@ public class HomeFlow {
 	}
 	
 	public static void actions(int riskOption) {
-		
-		Allure.step("Deposit and withdrawal flow", () -> {
-			UiActions.click(page(HomePage.class).cards("sumActions"));	
-			//Get the amount header for the assert
-			
-			String actualAmount = "";
-			
-			for(int i=0; i<2; i++)
-			{	//1. Without risk 2. Medium risk 3. High risk
-				UiActions.click(page(SumActionsPage.class).riskActions().get(riskOption));
-				//Click on deposit / withdrawal button
-				UiActions.click(page(SumActionsPage.class).actions().get(0));
-				if(i == 0) //Get the amount for the deposit assert
-					actualAmount = UiActions.getText(page(SumActionsPage.class).amount());
-				
-				else
-				{	//Click on the withdrawal option
-					UiActions.click(page(SumActionsPage.class).withdrawal());
-					UiActions.click(page(SumActionsPage.class).chooseWithdrawal().get(0));
-					//Get the amount for the deposit assert
-					actualAmount = UiActions.getText(page(SumActionsPage.class).depositAmount().get(0));
-				}						
-				UiActions.click(page(SumActionsPage.class).confirmButton());
-			} //Get the header amount for the selected risk option
-			String expectedAmount = UiActions.getText(page(SumActionsPage.class).headerAmount().get(0));
-			Verifications.verifyText(actualAmount, expectedAmount);
-		});
-	}
-	
-	public static void median() {
-		
-		Allure.step("Median flow", () -> {
 
+	    Allure.step("Deposit and withdrawal flow", () -> {
 
-		});
+	        UiActions.click(page(HomePage.class).cards("/sumActions"));
+
+	        for (int i = 0; i < 2; i++) {
+		        String actualAmount = "";
+		        var sumActionsPage = page(SumActionsPage.class);
+	            // 1. Without risk 2. Medium risk 3. High risk
+	            UiActions.click(sumActionsPage.riskActions().get(riskOption));
+	            // Click on deposit / withdrawal button
+	            UiActions.click(sumActionsPage.actions().get(0));
+
+	            if (i == 0) { 
+	                // Get the amount for the deposit assert
+	                actualAmount = UiActions.getText(sumActionsPage.amount());
+	            } else {
+	                // Withdrawal flow
+	                UiActions.click(sumActionsPage.withdrawal());
+	                UiActions.click(sumActionsPage.chooseWithdrawal().get(0));
+	                // Get the amount for the withdrawal assert
+	                actualAmount = UiActions.getText(sumActionsPage.depositAmount().get(0));
+	            }
+	            UiActions.click(sumActionsPage.confirmButton());
+		        // Get the header amount for the selected risk option
+		        String expectedAmount = UiActions.getText(sumActionsPage.headerAmount().get(0));
+		        Verifications.verifyText(actualAmount, expectedAmount);
+	        }
+	        ManagePages.goBack();
+	        WaitForElement.waitUntilUrlContains("/home");
+	    });
 	}
 	
 	public static void anotherPlans() {
-		
-		Allure.step("Another plans flow", () -> {
 
+	    Allure.step("Another plans flow", () -> {
 
-		});
+	    });
+	}
+	
+	public static void logout() {
+
+	    Allure.step("Logout flow", () -> {
+	    	
+	    	UiActions.click(page(HomePage.class).logout());
+	    	WaitForElement.waitUntilUrlContains("/auth/login");
+	    });
 	}
 	
 	private static String[] getUris()
