@@ -11,6 +11,7 @@ import utilities.WaitForElement;
 public class ResetPasswordFlow {
 	
 	public static void resetPassword(String username, String[] password, String[] uri) {
+		
 		Allure.step("Reset password flow", () -> {
 			
 			for(int i=0; i<password.length; i++)
