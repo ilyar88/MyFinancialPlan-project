@@ -11,6 +11,7 @@ import pageObjects.IntroductionPage;
 public class IntroductionFlow {
 	
 	public static void introduction() {
+		
 		Allure.step("Introduction flow", () -> {
 			
 			List<WebElement> elements = page(IntroductionPage.class).expandIcons();
