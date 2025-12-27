@@ -18,7 +18,7 @@ public class UiActions {
 		_driver = driver;
     }
 	
-	/** Returns a short, readable name for a WebElement's locator. */
+	// Returns a short, readable name for a WebElement's locator.
 	public static String elementName(WebElement elem) {
     	final Pattern LOCATOR_PAT =
                 Pattern.compile(".*->\\s*[^:]+:\\s*(.*?)]");
