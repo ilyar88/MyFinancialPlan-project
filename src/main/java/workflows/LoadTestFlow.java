@@ -3,11 +3,8 @@ package workflows;
 import org.testcontainers.utility.MountableFile;
 import utilities.K6ReportHelper;
 import java.io.File;
-
 import com.github.dockerjava.api.model.WaitResponse;
-
 import io.qameta.allure.Allure;
-
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import org.testcontainers.DockerClientFactory;
@@ -16,6 +13,7 @@ import org.testcontainers.k6.K6Container;
 public class LoadTestFlow {
 
     public static void loadTest() {
+    	
     	Allure.step("Load test flow", () -> {
 	        try {
 	            StringBuilder output = new StringBuilder();
@@ -36,7 +34,6 @@ public class LoadTestFlow {
 	            if (!outDir.exists()) {
 	                outDir.mkdirs();
 	            }
-	
 	            // Create docker client
 	            DockerClient dockerClient = DockerClientFactory.instance().client();
 	
