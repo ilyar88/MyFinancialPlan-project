@@ -2,7 +2,7 @@
 # Summarize TestNG + a slice of the HTML report into the GitHub Actions job summary.
 
 XML="./target/surefire-reports/testng-results.xml"
-FILE="./target/surefire-reports/Suite/Sanity.html"
+FILE="./target/surefire-reports/Suite/$1.html"
 
 {
   echo "### Test results"
@@ -24,8 +24,8 @@ FILE="./target/surefire-reports/Suite/Sanity.html"
   fi
 
   if [[ -f "$FILE" ]]; then
-    echo "## SanityTest.html"
-    echo "<details><summary>View Sanity.html</summary>"
+    echo "## $1Test.html"
+    echo "<details><summary>View $1.html</summary>"
     # Print only the first <table> block (usually the summary)
     sed -n '/<table/,/<\/table>/p' "$FILE"
     echo "</details>"
