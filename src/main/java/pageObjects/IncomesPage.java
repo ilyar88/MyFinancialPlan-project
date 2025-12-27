@@ -51,5 +51,5 @@ public class IncomesPage {
     //Moving to the next section
     public WebElement nextButton() {
         return _driver.findElement(By.cssSelector("button.MuiButton-root.MuiButton-containedPrimary.MuiButton-sizeMedium"));
-    }
+    }    
 }
