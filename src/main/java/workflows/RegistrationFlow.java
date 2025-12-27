@@ -10,7 +10,9 @@ import pageObjects.RegisterPage;
 public class RegistrationFlow {
 
     public static void userRegister(String email, String password) {
+    	
         Allure.step("User registration flow", () -> {
+        	
             UiActions.click(page(LoginPage.class).createAccountLink());
             UiActions.enterText(page(RegisterPage.class).emailAddress(), email);
             UiActions.enterText(page(RegisterPage.class).password(), password);
