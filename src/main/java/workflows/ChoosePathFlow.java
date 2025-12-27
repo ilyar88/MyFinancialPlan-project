@@ -36,7 +36,7 @@ public class ChoosePathFlow {
 	public static void credit_checkout(String credit, String year, String month, String id) {
 		
 		Allure.step("Credit checkout flow", () -> {
-			
+			//Enter personal details for checkout
 			UiActions.enterText(page(CreditCheckoutPage.class).cardNumber(),credit);
 			UiActions.selectOption(page(CreditCheckoutPage.class).year(), "value", year);
 			UiActions.selectOption(page(CreditCheckoutPage.class).month(), "value",month);
