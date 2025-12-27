@@ -21,8 +21,12 @@ public class OtpFlow {
 	
 	// Configure OTP mailbox (user/app password/domain to filter messages)
 	public static void setOtp(String user,String appPass ,String domain) {
-		_user = user;
-		_appPass = appPass;
+		if(!user.isEmpty())
+			_user = user;
+		
+		if(!appPass.isEmpty())
+			_appPass = appPass;
+		
 		_domain = domain;
     }
 	
@@ -71,7 +75,6 @@ public class OtpFlow {
 	        }
 	    });
 	}
-
 
 	// Returns last text from today's email sent from *@{domain}; empty string if none
 	static String getEmailText() throws Exception {
