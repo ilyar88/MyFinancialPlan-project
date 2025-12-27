@@ -22,7 +22,7 @@ import workflows.OtpFlow;
 
 @Listeners({AllureTestNg.class, utilities.Listeners.class })
 public class BasePage {
-    /** Base test class: loads config, initializes WebDriver and handles teardown. */
+    //Base test class include: loads config, initializes WebDriver and handles teardown.
 	protected static WebDriver driver;
     protected Properties prop;
 
@@ -45,7 +45,7 @@ public class BasePage {
         }
     }
 
-    /** Prepare browser before tests: create driver, set waits, open URL, init page objects. */
+    //Prepare browser before tests: create driver, set waits, open URL, init page objects.
     @BeforeSuite(alwaysRun = true)
     public void setup() {
     	
@@ -116,7 +116,7 @@ public class BasePage {
         return driver;
     }
     
-    /** Take a screenshot, save it and attach to Allure. */
+    //Take a screenshot, save it and attach to Allure.
     public void takeSnapShot(String name) throws IOException {
         Allure.step("Take snapshot", () -> {
             File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
