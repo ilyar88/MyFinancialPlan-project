@@ -15,11 +15,11 @@ public class LoginPage {
     public WebElement createAccountLink() {
         return _driver.findElement(By.cssSelector("a[href='/auth/register']"));
     }
-    
+    //Email address textbox
     public WebElement emailAddress() {
         return _driver.findElement(By.cssSelector("input[name='email']"));
     }
-    
+    //Password textbox
     public WebElement password() {
         return _driver.findElement(By.cssSelector("input[name='password']"));
     }
