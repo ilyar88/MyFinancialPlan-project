@@ -13,14 +13,12 @@ on: # Manual trigger with a browser chooser
 run-name: "Run E2E test on ${{ inputs.browser }} browser"
 
 jobs:
-
   Sanity:
-    name: Sanity stage
+    name: Sanity test
     runs-on: ubuntu-latest
     environment: Web_sittings
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with:
           distribution: temurin # Set up Java 17 (Temurin distribution)
@@ -39,13 +37,12 @@ jobs:
           path: target/site/allure-maven-plugin
 
   Advanced:
-    name: Advanced stage
+    name: Advanced test
     runs-on: ubuntu-latest
     environment: Web_sittings
     needs: Sanity
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with: 
           distribution: temurin 
@@ -64,13 +61,12 @@ jobs:
           path: target/site/allure-maven-plugin
 
   Load:
-    name: Load stage
+    name: Load test
     runs-on: ubuntu-latest
     environment: Web_sittings
     needs: Advanced
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
