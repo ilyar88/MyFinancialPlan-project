@@ -29,7 +29,7 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 |--------------------------------------|--------------------------|
 | New User register to the website     | Register to the website with username and password. |
 | Login to Homepage                    | Login to the website with username and password. |
-| Create a profile                  | Create profile with the following details:<br>1. firstName<br>2. lastName<br>3. age<br>4. Marital status<br>5. Gender<br>6. Single breadwinner<br>7. Residential area, etc. |
+| Create a profile                  | Create profile with the following details:<br>1. FirstName<br>2. LastName<br>3. Age<br>4. Marital status<br>5. Gender<br>6. Single breadwinner<br>7. Residential area, etc. |
 | Introduction page                    | Verify expanding of 3 goals in the page. |
 | Add several incomes                  | Add incomes with amonut like:<br>1. First job<br>2. Second job<br>3. Allowance |
 | Add several expenses                 | Add expenses with amount like:<br>1. Apartment<br>2. Internet and media<br>3. Car |
@@ -39,7 +39,7 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 | Join success page                    | Enable "I want to watch other people's financial plans." checkbox and redirect to the Home page                                   |
 | Home page                            | Navigate to the following links:<br>1. Home page<br>2. Profile<br>3. Path to goals and dreams<br>4. My plan<br>5. Other people’s plans<br>6. Report a problem<br>7. Suggestions for improvement<br>8. Contact us |
 | Notification icon                    | Click on the notifications icon and verify that each update you made appears in the notifications list.                    |
-| Actions (Deposit and withdrawal)     | Verify Deposit and Withdrawal functionality via "Path to goals and dreams" link. |                           
+| Actions (Deposit and withdrawal)     | Verify deposit and withdrawal functionality via "Path to goals and dreams" link. |                           
 
 ## Validation test
 
@@ -71,7 +71,3 @@ MyFinancePlan is a SaaS website for creating and tracking personal financial pla
 - **Listeners** - used to generate Allure report with feature, severity, description, steps and for failure Mechanism
 - **Allure Reports** - main reporting system
 - **Grafana k6** - used for load testing when executed from a container
-
-
-
-
