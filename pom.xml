@@ -73,8 +73,8 @@
           <testFailureIgnore>true</testFailureIgnore>
           <suiteXmlFiles>
             <suiteXmlFile>Suites/Sanity.xml</suiteXmlFile>
-          <!--  <suiteXmlFile>Suites/Advanced.xml</suiteXmlFile> 
-            <suiteXmlFile>Suites/Load.xml</suiteXmlFile> -->
+            <suiteXmlFile>Suites/Advanced.xml</suiteXmlFile> 
+            <suiteXmlFile>Suites/Load.xml</suiteXmlFile>
           </suiteXmlFiles>
           <systemPropertyVariables>
             <browser>${browser}</browser>
