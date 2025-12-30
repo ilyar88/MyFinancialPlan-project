@@ -73,9 +73,8 @@ public class MyPlanFlow {
 	            else {
 					try { //If an error message appears due to an invalid number, click the cancel button 
 						WaitForElement.waitFor(page(MyPlanPage.class).errorMessage(), "ELEMENT_DISPLAYED", 5);
-					} catch (Exception e) {
 						UiActions.click(page(IncomesPage.class).cancel());
-					}
+					} catch (Exception ignored) { }
 				}
 	        }
 	        ManagePages.goBack();
