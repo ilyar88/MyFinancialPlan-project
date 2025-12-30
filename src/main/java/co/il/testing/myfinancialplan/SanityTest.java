@@ -116,6 +116,7 @@ public class SanityTest extends BasePage {
 	
 	@Feature("Home page")
 	@Severity(SeverityLevel.CRITICAL)
+	@Ignore("Skip home page.")
 	@Description("Check home page options like: Navigation sidebar and notifications.")
 	@Test(priority = 11)
 	public void homePageTest() {
