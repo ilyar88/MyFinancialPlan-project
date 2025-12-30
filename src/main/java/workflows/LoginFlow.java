@@ -4,7 +4,7 @@ import extensions.UiActions;
 import utilities.WaitForElement;
 import io.qameta.allure.Allure;
 import pageObjects.LoginPage;
-import static utilities.ManagePages.page;
+import static utilities.ManagePages.*;
 
 public class LoginFlow {
 
@@ -16,6 +16,7 @@ public class LoginFlow {
 	        UiActions.enterText(page(LoginPage.class).password(), password);
 	        UiActions.click(page(LoginPage.class).login());
 	        WaitForElement.waitUntilUrlContains(uri);
+	        goBack();
 		});
     }
 
