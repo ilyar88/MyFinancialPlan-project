@@ -1,18 +1,12 @@
 package co.il.testing.myfinancialplan;
 
+import base.BasePage;
 import java.io.IOException;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import base.BasePage;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import utilities.TestData;
-import workflows.LoginFlow;
-import workflows.MyPlanFlow;
-import workflows.OtpFlow;
-import workflows.ResetPasswordFlow;
+import workflows.*;
 
 public class AdvancedTest extends BasePage {
 
@@ -45,11 +39,11 @@ public class AdvancedTest extends BasePage {
 		OtpFlow.typePassword(password,uri);
 	}
 	
-	@Feature("My plan")
+	@Feature("My plan page")
 	@Severity(SeverityLevel.CRITICAL)
-	@Description("OTP validation (TDD).")
-	@Ignore("Skip OTP validation.")
-	@Test(priority = 3, dataProvider = "globalProvider", dataProviderClass = TestData.class)
+	@Description("Validate the My Plan page, including incomes and expenses.")
+	@Ignore("Skip my plan page validation.")
+	@Test(priority = 4, dataProvider = "globalProvider", dataProviderClass = TestData.class)
 	public void myPlan_TDD(String category, String[] names, String[] amounts) {
 		MyPlanFlow.updateIncomesOrExpenses(category, names, amounts);
 	}
