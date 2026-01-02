@@ -14,7 +14,7 @@ public class LoadTest {
 	}
 	
 	@Severity(SeverityLevel.MINOR)
-	@Description("Execute a load test with 10 virtual users and verify that the requests return a 200 status code.")
+	@Description("Execute a load test with 10 virtual users and verify that all requests return a 200 status code.")
 	@Test(description = "Load test with 10 virtual users")
 	void loadTest() throws Exception {
 		LoadTestFlow.loadTest();
