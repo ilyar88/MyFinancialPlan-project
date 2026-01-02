@@ -16,9 +16,8 @@ public class PricingPage {
     public List<WebElement> paths() {
         return _driver.findElements(By.cssSelector("button[type='button']"));
     }
-    //There two checkboxes for standard and Premium paths
+    //There are two checkboxes for standard and Premium paths
     public List<WebElement> monthlyPay() {
         return _driver.findElements(By.cssSelector("input[type='checkbox']"));
     }
-
 }
