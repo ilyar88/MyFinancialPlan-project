@@ -1,15 +1,35 @@
 package workflows;
 
-import static utilities.ManagePages.page;
+import static utilities.ManagePages.*;
 import extensions.UiActions;
 import extensions.Verifications;
 import io.qameta.allure.Allure;
+import pageObjects.CongratulationPage;
 import pageObjects.CreditCheckoutPage;
 import pageObjects.OrderSummaryPage;
 import pageObjects.PricingPage;
 import utilities.WaitForElement;
 
 public class ChoosePathFlow {
+	
+	public static void congratulation(String feedback) {
+		
+		Allure.step("Congratulation flow", () -> {
+			//Open a new tab and redirect to api.whatsapp page.
+			UiActions.click(page(CongratulationPage.class).buttons().get(0));
+			switchToTab();
+			WaitForElement.waitUntilUrlContains("/api.whatsapp.com/send");
+			closeTab();
+			switchToTab();
+			UiActions.enterText(page(CongratulationPage.class).feedback(), feedback);
+			UiActions.click(page(CongratulationPage.class).buttons().get(2));
+			//Wait for form submitted successfully message
+			WaitForElement.waitFor(page(CongratulationPage.class).alertText(), "ELEMENT_DISPLAYED", 5);
+			//Choosing a financial path
+			UiActions.click(page(CongratulationPage.class).buttons().get(1));
+			WaitForElement.waitUntilUrlContains("/pricing");
+		});
+	}
 	
 	public static void choosePath(String name,String email, String phone) {
 		
