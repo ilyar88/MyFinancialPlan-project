@@ -12,7 +12,7 @@ public class ExpensesFlow {
     // Index mapping: 0:totalExpense(Float), 1:nextTab(Integer), 2:currentCategory(String), 3:newTab(Boolean)
     private static final ThreadLocal<Object[]> state = ThreadLocal.withInitial(() -> new Object[]{0f, 0, "", true});
 
-    public static Object[] accessState(Float f, Integer i, String s, Boolean b) {
+    public static Object[] states(Float f, Integer i, String s, Boolean b) {
         Object[] st = state.get();
         if (f != null) st[0] = f;
         if (i != null) st[1] = i;
@@ -24,22 +24,20 @@ public class ExpensesFlow {
     public static void addExpenses(String category, String[] names, String[] amounts) {
         Allure.step("Add expenses flow", () -> {
             for (int i = 0; i < names.length; i++) {
-                Object[] st = accessState(null, null, category, null);               
+                Object[] st = states(null, null, category, null);               
                 // Navigate to next pages                
                 if (names[i].equals("nextButton")) { 
                     UiActions.click(page(IncomesPage.class).nextButton());
                     WaitForElement.waitUntilUrlContains("/FinancialPlanMaker/emergencyFund");
-                    UiActions.click(page(IncomesPage.class).nextButton());
-                    WaitForElement.waitUntilUrlContains("/FinancialPlanMaker/recurringExpenses");
                     continue;
                 }
-                // Update the category
+                // Update the category name
                 if (!st[2].equals(category)) {
-                    accessState(null, null, category, null);
+                    states(null, null, category, null);
                 }
                 // Switch to next tab
                 if (names[i].equals("nextTab")) {
-                    accessState(null, (Integer) st[1] + 1, null, true);
+                    states(null, (Integer) st[1] + 1, null, true);
                     var tab = page(PeriodExpensesPage.class).buttonsTab().get((Integer) st[1]);
                     WaitForElement.waitFor(tab, "ELEMENT_CLICKABLE", 10);
                     UiActions.moveToElement(tab, 200);
@@ -48,7 +46,7 @@ public class ExpensesFlow {
                 }
                 // At first a large button appears in a new tab; afterward an icon button appears
                 if ((Boolean) st[3]) { 
-                    accessState(null, null, null, false);
+                    states(null, null, null, false);
                     UiActions.click(page(IncomesPage.class).addIncomeOrExpense());
                 } else {
                     try {
@@ -57,14 +55,14 @@ public class ExpensesFlow {
                         UiActions.click(page(PeriodExpensesPage.class).addExpenseIcon());
                     }
                 }
-
+                //Add the category details include name and amount.
                 UiActions.click(page(PeriodExpensesPage.class).category());
                 UiActions.click(page(PeriodExpensesPage.class).listOfValues((String) st[2]));
                 UiActions.enterText(page(IncomesPage.class).name(), names[i]);
                 UiActions.enterText(page(IncomesPage.class).amount(), amounts[i]);
                 UiActions.click(page(IncomesPage.class).add());
 
-                accessState((Float) st[0] + Float.parseFloat(amounts[i]), null, null, null);
+                states((Float) st[0] + Float.parseFloat(amounts[i]), null, null, null);
             }
         });
     }
@@ -93,32 +91,35 @@ public class ExpensesFlow {
         });
     }
     
-    public static void recurringExpense(String[] name, String[] targetAmount, String[] currentAmount,
-            String[] liquidAmount, String[] years) {
+    public static void additionExpenses(String[] name, String[] targetAmount, String[] currentAmount,
+            String[] liquidAmount, String[] years, String testcaseName) {
     	
-        Allure.step("Add recurring expense flow", () -> {
-        	
-            String method = Thread.currentThread().getStackTrace()[2].getMethodName();
-            boolean isRecurring = method.equals("recurringExpense");
-        
+        Allure.step("Add " + testcaseName + " flow", () -> {
+        	      
             for (int i = 0; i < targetAmount.length; i++) {
                 if (name[i].equals("Finish")) {
                     UiActions.click(page(FinancialGoalsPage.class).finishButton());
-                    WaitForElement.waitUntilUrlContains("/Congratulation");
+                    WaitForElement.waitUntilUrlContains("/congratulation");
                     continue;
                 }
             
                 if (name[i].equals("Update")) {
                     UiActions.click(page(RecurringExpensesPage.class).editButtons().get(0));
-                } else {
+                }
+               else if (name[i].equals("Delete")) {
+                   WaitForElement.waitForListSize(page(RecurringExpensesPage.class).editButtons(), 2, 10);
+                   UiActions.click(page(RecurringExpensesPage.class).editButtons().get(1));
+                   UiActions.click(page(RecurringExpensesPage.class).confirmDelete());
+                   continue;
+                }
+                else {
                     UiActions.click(page(RecurringExpensesPage.class).addExpense());
                     UiActions.enterText(page(IncomesPage.class).name(), name[i]);
-                }
-            
+                }           
                 UiActions.enterText(page(RecurringExpensesPage.class).targetAmount(), targetAmount[i]);
                 UiActions.enterText(page(RecurringExpensesPage.class).currentAmount(), currentAmount[i]);
             
-                if (!liquidAmount[i].equals("Empty")) {
+                if (!liquidAmount[i].equals("Unchanged")) {
                     UiActions.enterText(page(RecurringExpensesPage.class).liquidAmount(), liquidAmount[i]);
                 }
             
@@ -136,27 +137,22 @@ public class ExpensesFlow {
                 };
             
                 UiActions.click(page(RecurringExpensesPage.class).riskOptions().get(index));
-                UiActions.click(isRecurring ? page(IncomesPage.class).add() : page(FinancialGoalsPage.class).add());
+                UiActions.click(testcaseName == "recurring expenses" ? page(IncomesPage.class).add() : page(FinancialGoalsPage.class).add());
                 
                 String text = UiActions.getText(page(RecurringExpensesPage.class).monthlyPayment());
                 String months = text.replaceAll("\\D+", "");
                 Verifications.verifyText(String.valueOf(Integer.parseInt(yearValue) * 12), months);
-                    
-                if (!name[i].equals("Update") && isRecurring) {
-                    WaitForElement.waitForListSize(page(RecurringExpensesPage.class).editButtons(), 2, 10);
-                    UiActions.click(page(RecurringExpensesPage.class).editButtons().get(1));
-                    UiActions.click(page(RecurringExpensesPage.class).confirmDelete());
-                }
             }       
             UiActions.click(page(IncomesPage.class).nextButton());
             WaitForElement.waitUntilUrlContains("/FinancialPlanMaker/financialGoals");
         });
     }
     
-    public static void financialGoals(String[] name, String[] targetAmount, String[] currentAmount, String[] liquidAmount, String[] years) {
-        recurringExpense(name, targetAmount, currentAmount, liquidAmount, years);
+    public static void financialGoals(String[] name, String[] targetAmount, String[] currentAmount,
+    								  String[] liquidAmount, String[] years,String testcaseName) {
+        additionExpenses(name, targetAmount, currentAmount, liquidAmount, years,testcaseName);
     }
-
+    
     public static float getTotalExpense() {
         return (Float) state.get()[0];
     }
