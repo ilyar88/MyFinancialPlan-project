@@ -3,7 +3,7 @@
 <suite name="Advanced" parallel="false">
   <test name="AdvancedTest">
     <classes>
-      <class name="co.il.testing.myfinancialplan.AdvancedTest"/>
+      <class name="co.il.testing.myfinancialplan.ValidationTest"/>
     </classes>
   </test>
 </suite>
