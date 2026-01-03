@@ -48,7 +48,7 @@ public class HomeFlow {
 		});
 	}
 	
-	public static void actions(int riskOption) {
+	public static void actions(String riskOption) {
 
 	    Allure.step("Deposit and withdrawal flow", () -> {
 
@@ -58,7 +58,7 @@ public class HomeFlow {
 		        String actualAmount = "";
 		        var sumActionsPage = page(SumActionsPage.class);
 	            // 1. Without risk 2. Medium risk 3. High risk
-	            UiActions.click(sumActionsPage.riskActions().get(riskOption));
+	            UiActions.click(sumActionsPage.riskActions().get(Integer.parseInt(riskOption)));
 	            // Click on deposit / withdrawal button
 	            UiActions.click(sumActionsPage.actions().get(0));
 
