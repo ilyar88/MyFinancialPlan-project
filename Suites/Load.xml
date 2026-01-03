@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Load" parallel="false">
-  <test name="LoadTesting">
+  <test name="LoadTest">
     <classes>
       <class name="co.il.testing.myfinancialplan.LoadTest"/>
     </classes>
