@@ -8,9 +8,9 @@ import io.qameta.allure.*;
 import utilities.TestData;
 import workflows.*;
 
-public class AdvancedTest extends BasePage {
+public class ValidationTest extends BasePage {
 
-	public AdvancedTest() throws IOException {
+	public ValidationTest() throws IOException {
 		super();
 	}
 	
