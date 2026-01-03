@@ -35,7 +35,7 @@ public class RecurringExpensesPage {
     public List<WebElement> riskOptions() {
         return _driver.findElements(By.cssSelector("button.custom-button"));
     }
-    // 1. Edit button 2. Delete button;
+    // 1. Edit button 2. Delete button
     public List<WebElement> editButtons() {
         return _driver.findElements(By.cssSelector("button.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall"));
     }
