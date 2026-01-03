@@ -1,6 +1,5 @@
 package workflows;
 
-
 import static utilities.ManagePages.page;
 import extensions.UiActions;
 import extensions.Verifications;
